@@ -2,6 +2,6 @@
 [![Open Issues](https://img.shields.io/github/issues/matthiware/flamy2d.svg?style=flat-square)](https://github.com/MatthiWare/Flamy2D/issues)
 
 #
-[![Flamy](https://raw.githubusercontent.com/MatthiWare/Flamy2D/master/Flamy.png)]
+[![Flamy](https://raw.githubusercontent.com/MatthiWare/Flamy2D/master/Flamy.png)](https://github.com/MatthiWare/Flamy2D)
 #
 An open source 2D game engine made in C#
