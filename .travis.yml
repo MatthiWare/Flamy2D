@@ -1,2 +1,2 @@
 language: csharp
-solution: src/Flamy2D.sln
+solution: Flamy2D.sln
