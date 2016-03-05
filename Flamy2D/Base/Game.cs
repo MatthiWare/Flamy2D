@@ -93,8 +93,10 @@ namespace Flamy2D.Base
 
 
             }
-
         }
+
+        protected virtual void Update() { }
+        protected virtual void Render() { }
 
         protected virtual void SetupOpenGL()
         {
