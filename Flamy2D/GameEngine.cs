@@ -39,6 +39,8 @@ namespace Flamy2D
         {
             Configuration = config;
             Closing = false;
+
+            Keyboard = new Keyboard();
         }
 
         /// <summary>
