@@ -35,6 +35,7 @@ namespace Flamy2D.Base
         private GraphicsContext context;
         private GraphicsMode graphicsMode;
         private GameTime time;
+        private bool updating = false;
 
         // Timings data
         private double updatesPerSec;
@@ -60,10 +61,16 @@ namespace Flamy2D.Base
             gameloopThread.Start();
 
             this.Log("Enter message processing loop");
-            while (window != null && window.Exists)
+            while (!Closing && window != null && window.Exists)
             {
                 window.ProcessEvents();
             }
+            this.Log("Exited message processing loop");
+
+            this.Log("Waiting for game to finish");
+            while (updating) ;
+
+
         }
 
         private void GameLoop()
@@ -92,15 +99,25 @@ namespace Flamy2D.Base
 
             CalculateTimings();
 
-            
             time.Start();
 
             this.Log("Enter game loop");
             while (!Closing)
             {
+                if (context.IsDisposed)
+                {
+                    this.Log("Context not available");
+                    break;
+                }
+
+                updating = true; 
+
                 InternUpdate();
                 Render();
+
+                updating = false;
             }
+            this.Log("Exited game loop");
 
             time.Stop();
         }
@@ -170,12 +187,13 @@ namespace Flamy2D.Base
             window.KeyDown += (o, e) => Keyboard.RegisterKeyDown(o, e);
             window.KeyUp += (o, e) => Keyboard.RegisterKeyUp(o, e);
 
-            window.Closing += (o, e) => {
+            window.Closing += (o, e) =>
+            {
                 this.Log("Window is closing");
                 Exit();
 
                 // else the window will instantly close and not wait for the game to properly exit. 
-                e.Cancel = true; 
+                e.Cancel = true;
             };
 
         }

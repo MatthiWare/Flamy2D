@@ -59,6 +59,7 @@
     <Compile Include="Base\Game.cs" />
     <Compile Include="Base\GameTime.cs" />
     <Compile Include="GameEngine.cs" />
+    <Compile Include="Graphics\Texture2D.cs" />
     <Compile Include="Input\Keyboard.cs" />
     <Compile Include="Input\KeyState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
