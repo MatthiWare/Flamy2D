@@ -2,6 +2,7 @@
 using Flamy2D.Extensions;
 using OpenTK;
 using OpenTK.Graphics;
+using Flamy2D.Input;
 
 namespace Flamy2D
 {
@@ -21,6 +22,7 @@ namespace Flamy2D
         /// </summary>
         public Resolution Resolution { get; set; }
 
+        public Keyboard Keyboard { get; set; }
 
 
         private NativeWindow window;
@@ -67,6 +69,8 @@ namespace Flamy2D
 
             window.Resize += (o, e) => OnResize();
 
+            window.KeyDown += (o, e) => Keyboard.RegisterKeyDown(o, e);
+            window.KeyUp += (o, e) => Keyboard.RegisterKeyUp(o, e);
         }
 
         /// <summary>

@@ -59,6 +59,8 @@
     <Compile Include="GameConfiguration.cs" />
     <Compile Include="GameEngine.cs" />
     <Compile Include="GameTime.cs" />
+    <Compile Include="Input\Keyboard.cs" />
+    <Compile Include="Input\KeyState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resolution.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -89,6 +91,7 @@
   <ItemGroup>
     <None Include="Resources\Flamy.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
