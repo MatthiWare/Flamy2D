@@ -15,6 +15,14 @@ namespace Flamy2D
             Scenes = new GameSceneCollection();
         }
 
-        override 
+        protected override void Update()
+        {
+            base.Update();
+        }
+
+        protected override void Render()
+        {
+            base.Render();
+        }
     }
 }
