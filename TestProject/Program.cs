@@ -12,6 +12,8 @@ namespace TestProject
         static void Main()
         {
             GameConfiguration config = new GameConfiguration();
+            config.FPSTarget = 60;
+            config.FixedFPS = true;
 
             TestGame game = new TestGame(config);
             game.Run();

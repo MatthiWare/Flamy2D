@@ -14,12 +14,16 @@ namespace Flamy2D.Scenes
             Name = name;
         }
 
-        public virtual void Update()
+        public abstract void Update();
+
+        public abstract void Render();
+
+        public virtual void SceneEntered()
         {
 
         }
 
-        public virtual void Render()
+        public virtual void SceneExited()
         {
 
         }

@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Flamy2D.Extensions;
+using System;
 
-namespace Flamy2D.Extensions
+namespace Flamy2D
 {
     public static class LogExtensions
     {

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Flamy2D;
 using Flamy2D.Extensions;
 using OpenTK;
 using OpenTK.Graphics;
@@ -34,6 +34,10 @@ namespace Flamy2D.Base
         private NativeWindow window;
         private GraphicsContext context;
         private GraphicsMode graphicsMode;
+        private GameTime time;
+
+        // Timings data
+        private double updatesPerSec;
 
         public Game(GameConfiguration config)
         {
@@ -41,6 +45,7 @@ namespace Flamy2D.Base
             Closing = false;
 
             Keyboard = new Keyboard();
+            time = new GameTime();
         }
 
         /// <summary>
@@ -85,18 +90,43 @@ namespace Flamy2D.Base
 
             window.Visible = true;
 
+            CalculateTimings();
+
+            
+            time.Start();
+
             this.Log("Enter game loop");
             while (!Closing)
             {
-
-
-
-
+                InternUpdate();
+                Render();
             }
+
+            time.Stop();
+        }
+
+        private void CalculateTimings()
+        {
+            updatesPerSec = 1.0 / (double)Configuration.FPSTarget;
+        }
+
+        private double frameDelta;
+        private void InternUpdate()
+        {
+            frameDelta = time.Update();
+
+            Update();
+
+            while (Configuration.FixedFPS && (frameDelta += time.Update()) < updatesPerSec)
+                Update();
         }
 
         protected virtual void Update() { }
-        protected virtual void Render() { }
+        protected virtual void Render()
+        {
+            if (!context.IsDisposed)
+                context.SwapBuffers();
+        }
 
         protected virtual void SetupOpenGL()
         {
@@ -178,6 +208,9 @@ namespace Flamy2D.Base
         protected virtual void OnResize()
         {
             updateResolution();
+
+            if (context != null && !context.IsDisposed)
+                context.Update(window.WindowInfo);
         }
 
         protected virtual void OnExit()

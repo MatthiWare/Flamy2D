@@ -1,6 +1,7 @@
 ﻿
 
 using System;
+using System.Diagnostics;
 
 namespace Flamy2D.Base
 {
@@ -9,27 +10,47 @@ namespace Flamy2D.Base
     /// </summary>
     public class GameTime
     {
+        private Stopwatch watch;
 
         /// <summary>
-        /// The total time the game is running for. 
-        /// <see cref="System.TimeSpan"/>
+        /// The total time the game is running for in MS.
         /// </summary>
-        public TimeSpan Total { get; private set; }
+        public double Total { get { return watch.ElapsedMilliseconds * 0.001; } }
 
         /// <summary>
-        /// The delta time (time since last update). 
-        /// <see cref="System.TimeSpan"/>
+        /// The delta time in MS. 
         /// </summary>
-        public TimeSpan Elapsed { get; private set; }
+        public double Elapsed { get; private set; }
 
+        private double lastUpdated;
 
         /// <summary>
         /// .ctor for <see cref="Flamy2D.GameTime"/>
         /// </summary>
         public GameTime()
         {
-            Total = new TimeSpan();
-            Elapsed = new TimeSpan();
+            Elapsed = 0;
+            lastUpdated = 0;
+            watch = new Stopwatch();
+        }
+
+        public void Start()
+        {
+            watch.Start();
+        }
+
+        public void Stop()
+        {
+            watch.Stop();
+        }
+
+        public double Update()
+        {
+            double now = Total;
+            Elapsed = now - lastUpdated;
+            lastUpdated = now;
+            return Elapsed;
+
         }
 
     }

@@ -1,15 +1,17 @@
 ﻿using Flamy2D;
-using Flamy2D.Base;
 
 namespace TestProject
 {
-    public class TestGame : Game
+    public class TestGame : GameEngine
     {
 
         public TestGame(GameConfiguration config)
             : base(config)
         {
+            MainScene scene = new MainScene();
 
+            Scenes.Add(scene);
+            SwitchScene(MainScene.ID);
         }
 
     }

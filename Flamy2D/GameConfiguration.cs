@@ -18,11 +18,6 @@ namespace Flamy2D
         public bool Resizable { get; set; }
 
         /// <summary>
-        /// If the updates per second should be fixed to <see cref="UPSTarget"/>. 
-        /// </summary>
-        public bool FixedUPS { get; set; }
-
-        /// <summary>
         /// If the frames per second should be fixed to <see cref="FPSTarget"/>
         /// </summary>
         public bool FixedFPS { get; set; }
@@ -49,12 +44,6 @@ namespace Flamy2D
         public int FPSTarget { get; set; }
 
         /// <summary>
-        /// The updates per second target.
-        /// Only works if <see cref="FixedUPS"/> is enabled. 
-        /// </summary>
-        public int UPSTarget { get; set; }
-
-        /// <summary>
         /// The game window title. 
         /// </summary>
         public string Title { get; set; }
@@ -67,8 +56,6 @@ namespace Flamy2D
             Title = "Flamy 2D Engine";
             Width = 640;
             Height = 480;
-            UPSTarget = 60;
-            FixedUPS = true;
             VSync = false;
             FPSTarget = 60;
             FixedFPS = false;
