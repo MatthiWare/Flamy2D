@@ -54,6 +54,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\ILog.cs" />
+    <Compile Include="Extensions\LogExtensions.cs" />
     <Compile Include="GameConfiguration.cs" />
     <Compile Include="GameEngine.cs" />
     <Compile Include="GameTime.cs" />
