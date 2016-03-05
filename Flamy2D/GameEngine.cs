@@ -51,19 +51,19 @@ namespace Flamy2D
             Thread gameloopThread = new Thread(GameLoop);
             gameloopThread.Name = "Game Loop Thread";
             gameloopThread.Start();
+
+            this.Log("Enter message processing loop");
+            while (window != null && window.Exists)
+            {
+                window.ProcessEvents();
+            }
         }
 
         private void GameLoop()
         {
             this.Log("Create graphics context");
 
-            context = new GraphicsContext(
-                    mode: graphicsMode,
-                    window: window.WindowInfo,
-                    major: 4,
-                    minor: 0,
-                    flags: GraphicsContextFlags.ForwardCompatible
-                );
+            context = new GraphicsContext(graphicsMode, window.WindowInfo);
 
             context.MakeCurrent(window.WindowInfo);
 
