@@ -2,7 +2,7 @@
 
 using System;
 
-namespace Flamy2D
+namespace Flamy2D.Base
 {
     /// <summary>
     /// GameTime contains the total time the game is running and the time since the last update (delta time).

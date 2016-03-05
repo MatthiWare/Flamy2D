@@ -56,8 +56,9 @@
     <Compile Include="Extensions\ILog.cs" />
     <Compile Include="Extensions\LogExtensions.cs" />
     <Compile Include="GameConfiguration.cs" />
+    <Compile Include="Base\Game.cs" />
+    <Compile Include="Base\GameTime.cs" />
     <Compile Include="GameEngine.cs" />
-    <Compile Include="GameTime.cs" />
     <Compile Include="Input\Keyboard.cs" />
     <Compile Include="Input\KeyState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

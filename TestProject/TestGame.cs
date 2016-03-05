@@ -1,12 +1,9 @@
 ﻿using Flamy2D;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Flamy2D.Base;
 
 namespace TestProject
 {
-    public class TestGame : GameEngine
+    public class TestGame : Game
     {
 
         public TestGame(GameConfiguration config)

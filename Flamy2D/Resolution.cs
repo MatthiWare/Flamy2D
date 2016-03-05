@@ -3,7 +3,7 @@
 namespace Flamy2D
 {
     /// <summary>
-    /// Contains the resolution information of the <see cref="GameEngine"/> 
+    /// Contains the resolution information of the <see cref="Game"/> 
     /// </summary>
     public class Resolution
     {
