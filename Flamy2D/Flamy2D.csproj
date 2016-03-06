@@ -52,6 +52,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Buffer\GLBuffer.cs" />
+    <Compile Include="Buffer\GLBufferDynamic.cs" />
+    <Compile Include="Buffer\GLBufferSettings.cs" />
     <Compile Include="Extensions\ILog.cs" />
     <Compile Include="Extensions\LogExtensions.cs" />
     <Compile Include="GameConfiguration.cs" />
@@ -59,6 +62,7 @@
     <Compile Include="Base\GameTime.cs" />
     <Compile Include="GameEngine.cs" />
     <Compile Include="Graphics\InterpolationMode.cs" />
+    <Compile Include="Graphics\SpriteBatch.cs" />
     <Compile Include="Graphics\Texture2D.cs" />
     <Compile Include="Graphics\TextureConfig.cs" />
     <Compile Include="Input\Keyboard.cs" />
