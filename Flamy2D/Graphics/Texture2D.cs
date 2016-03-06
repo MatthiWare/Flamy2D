@@ -104,6 +104,27 @@ namespace Flamy2D.Graphics
             Unbind();
         }
 
+        public void SetData<T>(T[] data, Rectangle? rect, PixelFormat format = PixelFormat.Rgba, PixelType type = PixelType.UnsignedByte) where T : struct
+        {
+            Rectangle r = rect ?? Bounds;
+
+            Bind();
+            {
+                GL.TexSubImage2D(
+                    target: TextureTarget.Texture2D,
+                    level: 0,
+                    xoffset: 0,
+                    yoffset: 0,
+                    width: r.Width,
+                    height: r.Height,
+                    format: format,
+                    type: type,
+                    pixels: data
+                );
+            }
+            Unbind();
+        }
+
         private void Unbind()
         {
             GL.ActiveTexture(TextureUnit.Texture0);

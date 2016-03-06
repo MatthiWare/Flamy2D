@@ -14,7 +14,7 @@ namespace Flamy2D.Buffer
         public GLBufferSettings Settings { get; private set; }
 
         public int BufferSize { get; set; }
-        public int ElementSize { get; set; }
+        public int ElementSize { get { return BufferSize / Buffer.Count; } }
 
         public IList<T> Buffer { get; set; }
 
@@ -30,6 +30,39 @@ namespace Flamy2D.Buffer
             Bind();
             {
                 GL.BufferData(Settings.Target, BufferSize, Buffer.ToArray(), Settings.Hint);
+            }
+            Unbind();
+        }
+
+        public void PointTo(int where)
+        {
+            PointTo(where, Settings.Offset);
+        }
+
+        public void PointTo(int where, int offset)
+        {
+            Bind();
+            {
+                GL.EnableVertexAttribArray(where);
+
+                GL.VertexAttribPointer(where, Settings.AttribSize, Settings.Type, Settings.Normalized, ElementSize, offset);
+            }
+            Unbind();
+        }
+
+        public void PointTo(int where, params int[] other)
+        {
+            if (other == null)
+                throw new ArgumentNullException("other");
+
+            if (other.Length < 2)
+                throw new ArgumentException("Attribute Pointer contains less than 2 elements", "other");
+
+            Bind();
+            {
+                GL.EnableVertexAttribArray(where);
+
+                GL.VertexAttribPointer(where, other[0], Settings.Type, Settings.Normalized, ElementSize, other[1]);
             }
             Unbind();
         }
