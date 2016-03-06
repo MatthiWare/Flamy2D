@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL4;
+﻿using Flamy2D.Imaging;
+using OpenTK.Graphics.OpenGL4;
 using System;
 using System.Drawing;
 using System.IO;
@@ -72,15 +73,13 @@ namespace Flamy2D.Graphics
 
             Texture2D tex;
 
+            // Load the Image
             int w = -1, h = -1, n = -1;
-            IntPtr data;
-
+            IntPtr data = ImageLib.Load(path, ref w, ref h, ref n, 4);
             tex = new Texture2D(config, w, h);
             tex.SetData(data, null);
-
-            // free memory
-
-
+            ImageLib.Free(data);
+            
             return tex;
         }
 
