@@ -5,7 +5,7 @@ namespace Flamy2D.Scenes
 {
     public class GameSceneCollection : KeyedCollection<String, GameScene>
     {
-        protected override string GetKeyForItem(GameScene item)
+        protected override string GetKeyForItem(GameScene item) 
         {
             return item.Name;
         }
