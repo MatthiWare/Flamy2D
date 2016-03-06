@@ -95,7 +95,12 @@
   <ItemGroup>
     <None Include="Resources\Flamy.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Flamy2D.Imaging\Flamy2D.Imaging.csproj">
+      <Project>{76889ee5-050c-4aa8-b453-428a063b3442}</Project>
+      <Name>Flamy2D.Imaging</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

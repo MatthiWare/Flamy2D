@@ -1,6 +1,7 @@
 ﻿using OpenTK.Graphics.OpenGL4;
 using System;
 using System.Drawing;
+using System.IO;
 
 namespace Flamy2D.Graphics
 {
@@ -23,7 +24,7 @@ namespace Flamy2D.Graphics
 
             // Bind the texture
             Bind();
-            { 
+            {
                 // Choose the filters
                 TextureMinFilter minFilter = TextureMinFilter.Linear;
                 TextureMagFilter magFilter = TextureMagFilter.Linear;
@@ -62,39 +63,58 @@ namespace Flamy2D.Graphics
                     GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
             }
             Unbind();
-    }
-
-    public void SetData(IntPtr data, Rectangle? rect, PixelFormat format = PixelFormat.Rgba, PixelType type = PixelType.UnsignedByte)
-    {
-        Rectangle r = rect ?? Bounds;
-
-        Bind();
-        {
-            GL.TexSubImage2D(
-                target: TextureTarget.Texture2D,
-                level: 0,
-                xoffset: 0,
-                yoffset: 0,
-                width: r.Width,
-                height: r.Height,
-                format: format,
-                type: type,
-                pixels: data           
-            );
         }
-        Unbind();
-    }
 
-    private void Unbind()
-    {
-        GL.ActiveTexture(TextureUnit.Texture0);
-        GL.BindTexture(TextureTarget.Texture2D, 0);
-    }
+        public static Texture2D LoadFromFile(string path, TextureConfiguration config)
+        {
+            if (!File.Exists(path))
+                throw new FileNotFoundException("File doesn't exist", path);
 
-    private void Bind()
-    {
-        GL.ActiveTexture(TextureUnit.Texture0);
-        GL.BindTexture(TextureTarget.Texture2D, TextureId);
+            Texture2D tex;
+
+            int w = -1, h = -1, n = -1;
+            IntPtr data;
+
+            tex = new Texture2D(config, w, h);
+            tex.SetData(data, null);
+
+            // free memory
+
+
+            return tex;
+        }
+
+        public void SetData(IntPtr data, Rectangle? rect, PixelFormat format = PixelFormat.Rgba, PixelType type = PixelType.UnsignedByte)
+        {
+            Rectangle r = rect ?? Bounds;
+
+            Bind();
+            {
+                GL.TexSubImage2D(
+                    target: TextureTarget.Texture2D,
+                    level: 0,
+                    xoffset: 0,
+                    yoffset: 0,
+                    width: r.Width,
+                    height: r.Height,
+                    format: format,
+                    type: type,
+                    pixels: data
+                );
+            }
+            Unbind();
+        }
+
+        private void Unbind()
+        {
+            GL.ActiveTexture(TextureUnit.Texture0);
+            GL.BindTexture(TextureTarget.Texture2D, 0);
+        }
+
+        private void Bind()
+        {
+            GL.ActiveTexture(TextureUnit.Texture0);
+            GL.BindTexture(TextureTarget.Texture2D, TextureId);
+        }
     }
-}
 }
