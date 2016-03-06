@@ -67,6 +67,8 @@
     <Compile Include="Resolution.cs" />
     <Compile Include="Scenes\GameScene.cs" />
     <Compile Include="Scenes\GameSceneCollection.cs" />
+    <Compile Include="TypeHelper.cs" />
+    <Compile Include="Vertex2D.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
