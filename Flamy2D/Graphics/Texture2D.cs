@@ -125,16 +125,26 @@ namespace Flamy2D.Graphics
             Unbind();
         }
 
-        private void Unbind()
+        public void Unbind(TextureUnit unit)
         {
-            GL.ActiveTexture(TextureUnit.Texture0);
+            GL.ActiveTexture(unit);
             GL.BindTexture(TextureTarget.Texture2D, 0);
         }
 
-        private void Bind()
+        public void Unbind()
         {
-            GL.ActiveTexture(TextureUnit.Texture0);
+            Unbind(TextureUnit.Texture0);
+        }
+
+        public void Bind(TextureUnit unit)
+        {
+            GL.ActiveTexture(unit);
             GL.BindTexture(TextureTarget.Texture2D, TextureId);
+        }
+
+        public void Bind()
+        {
+            Bind(TextureUnit.Texture0);
         }
     }
 }

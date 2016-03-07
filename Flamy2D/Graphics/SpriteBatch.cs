@@ -95,6 +95,31 @@ namespace Flamy2D.Graphics
             active = false;
         }
 
+
+
+        public void Flush()
+        {
+            if (indexCount == 0)
+                return;
+
+            GL.BindVertexArray(abo);
+
+            vbo.UploadData(Vertices);
+
+            CurrentTexture.Bind();
+
+            ibo.Bind();
+
+            GL.DrawElements(BeginMode.Triangles, ibo.Buffer.Count, DrawElementsType.UnsignedInt, 0);
+
+            GL.BindVertexArray(0);
+
+            Array.Clear(Vertices, 0, Vertices.Length);
+
+            vertexCount = 0;
+            indexCount = 0;
+        }
+
         private static void SwapVec(ref Vector2 a, ref Vector2 b)
         {
             Vector2 temp = a;
