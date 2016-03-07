@@ -4,6 +4,7 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
 using System;
+using System.Drawing;
 
 namespace Flamy2D.Graphics
 {
@@ -95,7 +96,113 @@ namespace Flamy2D.Graphics
             active = false;
         }
 
+        public void Draw(Texture2D tex, Rectangle? srcRect, Rectangle destRect, Color4 color, Vector2 origin, Vector2 scale, int depth = 0, float rot = 0)
+        {
+            DrawInternal(tex, srcRect, destRect, color, scale, -origin.X, -origin.Y, depth, rot);
+        }
 
+        public void Draw(Texture2D tex, Rectangle? srcRect, Vector2 pos, Color4 color, float scale, int depth = 0, float rot = 0)
+        {
+            Rectangle destRect = new Rectangle((int)pos.X, (int)pos.Y, srcRect.HasValue ? srcRect.Value.Width : tex.Width, srcRect.HasValue ? srcRect.Value.Height : tex.Height);
+            DrawInternal(tex, srcRect, destRect, color, new Vector2(scale), 0, 0, depth, rot);
+        }
+
+        public void Draw(Texture2D tex, Rectangle? srcRect, Rectangle destRect, Color4 color, Vector2 origin, float scale, int depth = 0, float rot = 0)
+        {
+            DrawInternal(tex, srcRect, destRect, color, new Vector2(scale), -origin.X, -origin.Y, depth, rot);
+        }
+
+        public void Draw(Texture2D tex, Rectangle? srcRect, Vector2 pos, Color4 color, Vector2 origin, Vector2 scale, int depth = 0, float rot = 0)
+        {
+            Rectangle destRect = new Rectangle((int)pos.X, (int)pos.Y, srcRect.HasValue ? srcRect.Value.Width : tex.Width, srcRect.HasValue ? srcRect.Value.Height : tex.Height);
+            Draw(tex, srcRect, destRect, color, origin, scale, depth, rot);
+        }
+
+        public void Draw(Texture2D tex, Vector2 pos, Color4 color, float scale, int depth = 0, float rot = 0)
+        {
+            Rectangle destRect = new Rectangle((int)pos.X, (int)pos.Y, tex.Width, tex.Height);
+
+            DrawInternal(tex, null, destRect, color, new Vector2(scale), 0, 0, depth, rot);
+        }
+
+        public void Draw(Texture2D texture, Rectangle? sourceRect, Rectangle destRect, Color4 color, Vector2 scale, float depth = 0, SpriteEffects effects = SpriteEffects.None)
+
+        private void DrawInternal(Texture2D tex, Rectangle? srcRect, Rectangle destRect, Color4 color, Vector2 scale, float dx, float dy, float depth, float rot)
+        {
+            if (CurrentTexture.TextureId != -1 && tex.TextureId != CurrentTexture.TextureId)
+                Flush();
+
+            CurrentTexture = tex;
+
+            if (indexCount + 6 >= MAX_INDICES || vertexCount + 4 >= MAX_VERTICES)
+                Flush();
+
+            Rectangle src = srcRect ?? tex.Bounds;
+
+            Quaternion quat = new Quaternion(rot, 0, 0);
+            Vector2 pos = new Vector2(destRect.X, destRect.Y);
+            Vector2 size = new Vector2(destRect.Width, destRect.Height);
+
+            float sin = (float)Math.Sin(rot);
+            float cos = (float)Math.Sin(rot);
+
+            float x = pos.X;
+            float y = pos.Y;
+            float w = size.X;
+            float h = size.Y;
+
+            // Top left
+            Vertices[vertexCount++] = new Vertex2D(
+                pos: new Vector3(x + dx * cos - dy * sin, y + dx * sin + dy * cos, depth),
+                text: new Vector2(src.X / (float)tex.Width, src.Y / (float)tex.Height),
+                color: color
+            );
+
+            // Top right
+            Vertices[vertexCount++] = new Vertex2D(
+                pos: new Vector3(
+                    x + (dx + w) * cos - dy * sin,
+                    y + (dx + w) * sin + dy * cos,
+                    depth
+                ),
+                text: new Vector2(
+                    (src.X + src.Width) / (float)tex.Width,
+                    src.Y / (float)tex.Height
+                ),
+                color: color
+            );
+
+            // Bottom Left
+            Vertices[vertexCount++] = new Vertex2D(
+                pos: new Vector3(
+                    x + dx * cos - (dy + h) * sin,
+                    y + dx * sin + (dy + h) * cos,
+                    depth
+                ),
+                text: new Vector2(
+                    src.X / (float)tex.Width,
+                    (src.Y + src.Height) / (float)tex.Height
+                ),
+                color: color
+            );
+
+            // Bottom Right
+            Vertices[vertexCount++] = new Vertex2D(
+                pos: new Vector3(
+                    x + (dx + w) * cos - (dy + h) * sin,
+                    y + (dx + w) * sin + (dy + h) * cos,
+                    depth
+                ),
+                text: new Vector2(
+                    (src.X + src.Width) / (float)tex.Width,
+                    (src.Y + src.Height) / (float)tex.Height
+                ),
+                color: color
+            );
+
+            indexCount += 6;
+
+        }
 
         public void Flush()
         {
