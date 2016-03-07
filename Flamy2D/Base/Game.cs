@@ -5,6 +5,7 @@ using OpenTK.Graphics;
 using Flamy2D.Input;
 using System.Threading;
 using OpenTK.Graphics.OpenGL4;
+using Flamy2D.Graphics;
 
 namespace Flamy2D.Base
 {
@@ -29,13 +30,17 @@ namespace Flamy2D.Base
         /// </summary>
         public Keyboard Keyboard { get; set; }
 
+        public GameTime Time { get; private set; }
+
         public bool Closing { get; private set; }
 
         private NativeWindow window;
         private GraphicsContext context;
         private GraphicsMode graphicsMode;
-        private GameTime time;
+        
         private bool updating = false;
+
+        private SpriteBatch batch;
 
         // Timings data
         private double updatesPerSec;
@@ -46,7 +51,7 @@ namespace Flamy2D.Base
             Closing = false;
 
             Keyboard = new Keyboard();
-            time = new GameTime();
+           Time = new GameTime();
         }
 
         /// <summary>
@@ -92,6 +97,8 @@ namespace Flamy2D.Base
             this.Log("Loading OpenGL entry points");
             context.LoadAll();
 
+            batch = new SpriteBatch();
+
             this.Log("Setup OpenGL");
             SetupOpenGL();
 
@@ -99,7 +106,7 @@ namespace Flamy2D.Base
 
             CalculateTimings();
 
-            time.Start();
+            Time.Start();
 
             this.Log("Enter game loop");
             while (!Closing)
@@ -113,13 +120,14 @@ namespace Flamy2D.Base
                 updating = true; 
 
                 InternUpdate();
-                Render();
+                GL.Clear(ClearBufferMask.ColorBufferBit);
+                Render(batch);
 
                 updating = false;
             }
             this.Log("Exited game loop");
 
-            time.Stop();
+            Time.Stop();
         }
 
         private void CalculateTimings()
@@ -130,16 +138,16 @@ namespace Flamy2D.Base
         private double frameDelta;
         private void InternUpdate()
         {
-            frameDelta = time.Update();
+            frameDelta = Time.Update();
 
             Update();
 
-            while (Configuration.FixedFPS && (frameDelta += time.Update()) < updatesPerSec)
+            while (Configuration.FixedFPS && (frameDelta += Time.Update()) < updatesPerSec)
                 Update();
         }
 
         protected virtual void Update() { }
-        protected virtual void Render()
+        protected virtual void Render(SpriteBatch batch)
         {
             if (!context.IsDisposed)
                 context.SwapBuffers();
@@ -149,6 +157,7 @@ namespace Flamy2D.Base
         {
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+            GL.ClearColor(Color4.Blue);
         }
 
         /// <summary>

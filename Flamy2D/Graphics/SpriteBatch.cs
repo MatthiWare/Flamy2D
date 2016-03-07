@@ -13,7 +13,7 @@ namespace Flamy2D.Graphics
         private const int MAX_BATCHES = 64 * 32;
 
         private const int MAX_VERTICES = MAX_BATCHES * 4;
-        private const int MAX_INDICES = MAX_BATCHES * 4;
+        private const int MAX_INDICES = MAX_BATCHES * 6;
 
         private Texture2D CurrentTexture;
         private Texture2D Dot;
@@ -27,14 +27,10 @@ namespace Flamy2D.Graphics
         private int vertexCount;
         private int indexCount;
 
-        private Game game;
-
         private bool active;
 
-        public SpriteBatch(Game game)
+        public SpriteBatch()
         {
-            this.game = game;
-
             Dot = new Texture2D(TextureConfiguration.Nearest, 1, 1);
             Dot.SetData(new[] { Color4.White }, null, type: OpenTK.Graphics.OpenGL4.PixelType.Float);
 
@@ -99,6 +95,11 @@ namespace Flamy2D.Graphics
         public void Draw(Texture2D tex, Rectangle? srcRect, Rectangle destRect, Color4 color, Vector2 origin, Vector2 scale, int depth = 0, float rot = 0)
         {
             DrawInternal(tex, srcRect, destRect, color, scale, -origin.X, -origin.Y, depth, rot);
+        }
+
+        public void Draw(Texture2D tex, float x, float y, Color4 color)
+        {
+            Draw(tex, new Vector2(x, y), color, 1f);
         }
 
         public void Draw(Texture2D tex, Rectangle? srcRect, Vector2 pos, Color4 color, float scale, int depth = 0, float rot = 0)

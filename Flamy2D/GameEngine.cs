@@ -1,6 +1,7 @@
 ﻿using System;
 using Flamy2D.Base;
 using Flamy2D.Scenes;
+using Flamy2D.Graphics;
 
 namespace Flamy2D
 {
@@ -51,18 +52,22 @@ namespace Flamy2D
 
             if (CurrentScene != null)
             {
-                CurrentScene.Update();
+                CurrentScene.Update(this);
             }
         }
 
-        protected override void Render()
+        protected override void Render(SpriteBatch batch)
         {
-            base.Render();
+            base.Render(batch);
 
             if (CurrentScene != null)
             {
-                CurrentScene.Render();
+                batch.Begin();
+                CurrentScene.Render(this, batch);
+                batch.End();
             }
+
+            
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Flamy2D.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,9 +15,9 @@ namespace Flamy2D.Scenes
             Name = name;
         }
 
-        public abstract void Update();
+        public abstract void Update(GameEngine game);
 
-        public abstract void Render();
+        public abstract void Render(GameEngine game, SpriteBatch batch);
 
         public virtual void SceneEntered()
         {
