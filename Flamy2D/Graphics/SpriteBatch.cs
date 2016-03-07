@@ -125,7 +125,78 @@ namespace Flamy2D.Graphics
             DrawInternal(tex, null, destRect, color, new Vector2(scale), 0, 0, depth, rot);
         }
 
-        public void Draw(Texture2D texture, Rectangle? sourceRect, Rectangle destRect, Color4 color, Vector2 scale, float depth = 0, SpriteEffects effects = SpriteEffects.None)
+        public void Draw(Texture2D tex, Rectangle? srcRect, Rectangle destRect, Color4 color, Vector2 scale, float depth = 0, SpriteEffects effects = SpriteEffects.None)
+        {
+            if (CurrentTexture.TextureId != -1 && tex.TextureId != CurrentTexture.TextureId)
+                Flush();
+
+            CurrentTexture = tex;
+
+            if (indexCount + 6 >= MAX_INDICES || vertexCount + 4 >= MAX_VERTICES)
+                Flush();
+
+            Rectangle src = srcRect ?? tex.Bounds;
+
+            float x = destRect.X;
+            float y = destRect.Y;
+            float w = destRect.Width * scale.X;
+            float h = destRect.Height * scale.Y;
+
+            float srcX = src.X;
+            float srcY = src.Y;
+            float srcW = src.Width;
+            float srcH = src.Height;
+
+            Vector2 topLeft = new Vector2(srcX / (float)tex.Width, srcY/(float)tex.Height);
+
+            Vector2 topRight = new Vector2((srcX + srcW) / (float)tex.Width, srcY/(float)tex.Height);
+
+            Vector2 bottomLeft = new Vector2(srcX / (float)tex.Width, (srcY + srcH) / (float)tex.Height);
+
+            Vector2 bottomRight = new Vector2((srcX + srcW) / (float)tex.Width, (srcY + srcH) / (float)tex.Height);
+
+            if (effects.HasFlag(SpriteEffects.FlipHorizontal))
+            {
+                SwapVec(ref topLeft, ref topRight);
+                SwapVec(ref bottomLeft, ref bottomRight);
+            }
+
+            if (effects.HasFlag(SpriteEffects.FlipVertical))
+            {
+                SwapVec(ref topLeft, ref bottomLeft);
+                SwapVec(ref topRight, ref bottomRight);
+            }
+
+            // Top left
+            Vertices[vertexCount++] = new Vertex2D(
+                pos: new Vector3(x, y, depth),
+                text: topLeft,
+                color: color
+            );
+
+            // Top right
+            Vertices[vertexCount++] = new Vertex2D(
+                pos: new Vector3(x + w, y, depth),
+                text: topRight,
+                color: color
+            );
+
+            // Bottom Left
+            Vertices[vertexCount++] = new Vertex2D(
+                pos: new Vector3(x, y + h, depth),
+                text: bottomLeft,
+                color: color
+            );
+
+            // Bottom Right
+            Vertices[vertexCount++] = new Vertex2D(
+                pos: new Vector3(x+w, y+h, depth),
+                text: bottomRight,
+                color: color
+            );
+
+            indexCount += 6;
+        }
 
         private void DrawInternal(Texture2D tex, Rectangle? srcRect, Rectangle destRect, Color4 color, Vector2 scale, float dx, float dy, float depth, float rot)
         {
