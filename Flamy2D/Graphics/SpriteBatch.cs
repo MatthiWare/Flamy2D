@@ -1,5 +1,5 @@
-﻿using Flamy2D.Base;
-using Flamy2D.Buffer;
+﻿using Flamy2D.Buffer;
+using Flamy2D.Graphics.Shaders;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL4;
@@ -8,7 +8,7 @@ using System.Drawing;
 
 namespace Flamy2D.Graphics
 {
-    public class SpriteBatch
+    public partial class SpriteBatch
     {
         private const int MAX_BATCHES = 64 * 32;
 
@@ -24,15 +24,28 @@ namespace Flamy2D.Graphics
         private GLBufferDynamic<Vertex2D> vbo;
         private GLBuffer<uint> ibo;
 
+        private ShaderProgram program;
+
         private int vertexCount;
         private int indexCount;
 
         private bool active;
 
-        public SpriteBatch()
+        public SpriteBatch(ShaderProgram shader = null)
         {
             Dot = new Texture2D(TextureConfiguration.Nearest, 1, 1);
             Dot.SetData(new[] { Color4.White }, null, type: OpenTK.Graphics.OpenGL4.PixelType.Float);
+
+            if (shader == null)
+            {
+                VertexShader vert = new VertexShader(vert_source);
+                FragmentShader frag = new FragmentShader(frag_source);
+                program = new ShaderProgram(vert, frag);
+                program.Link();
+            }
+            else
+                program = shader;
+
 
             GLBufferSettings settings = new GLBufferSettings
             {
@@ -281,22 +294,31 @@ namespace Flamy2D.Graphics
             if (indexCount == 0)
                 return;
 
-            GL.BindVertexArray(abo);
+            program.Use(() =>
+            {
+                GL.BindVertexArray(abo);
 
-            vbo.UploadData(Vertices);
+                vbo.UploadData(Vertices);
 
-            CurrentTexture.Bind();
+                vbo.PointTo(program.Attrib("v_pos"), 2, 0);
+                vbo.PointTo(program.Attrib("v_tex"), 2, 3 * sizeof(float));
+                vbo.PointTo(program.Attrib("v_col"), 4, 5 * sizeof(float));
 
-            ibo.Bind();
+                CurrentTexture.Bind();
 
-            GL.DrawElements(BeginMode.Triangles, ibo.Buffer.Count, DrawElementsType.UnsignedInt, 0);
+                ibo.Bind();
 
-            GL.BindVertexArray(0);
+                program["MVP"] = CurrentCamera.ViewProjectionMatrix;
 
-            Array.Clear(Vertices, 0, Vertices.Length);
+                GL.DrawElements(BeginMode.Triangles, ibo.Buffer.Count, DrawElementsType.UnsignedInt, 0);
 
-            vertexCount = 0;
-            indexCount = 0;
+                GL.BindVertexArray(0);
+
+                Array.Clear(Vertices, 0, Vertices.Length);
+
+                vertexCount = 0;
+                indexCount = 0;
+            });
         }
 
         private static void SwapVec(ref Vector2 a, ref Vector2 b)

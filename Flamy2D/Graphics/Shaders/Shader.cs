@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Flamy2D.Graphics.Shaders
 {
-    public abstract class Shader
+    public abstract class Shader:IDisposable
     {
         protected ShaderType shaderType;
 
@@ -22,7 +22,7 @@ namespace Flamy2D.Graphics.Shaders
             shaderSources = sources;
         }
 
-        public abstract Compile();
+        public abstract void Compile();
 
         public virtual void Dispose()
         {

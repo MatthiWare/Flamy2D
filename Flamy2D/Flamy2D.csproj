@@ -62,8 +62,16 @@
     <Compile Include="Base\GameTime.cs" />
     <Compile Include="GameEngine.cs" />
     <Compile Include="Graphics\InterpolationMode.cs" />
+    <Compile Include="Graphics\Shaders\BasicShader.cs" />
+    <Compile Include="Graphics\Shaders\FragmentShader.cs" />
     <Compile Include="Graphics\Shaders\Shader.cs" />
+    <Compile Include="Graphics\Shaders\ShaderProgram.Attributes.cs" />
+    <Compile Include="Graphics\Shaders\ShaderProgram.cs" />
+    <Compile Include="Graphics\Shaders\ShaderProgram.Func.cs" />
+    <Compile Include="Graphics\Shaders\ShaderProgramHandle.cs" />
+    <Compile Include="Graphics\Shaders\VertexShader.cs" />
     <Compile Include="Graphics\SpriteBatch.cs" />
+    <Compile Include="Graphics\SpriteBatch.Shader.cs" />
     <Compile Include="Graphics\SpriteEffects.cs" />
     <Compile Include="Graphics\Texture2D.cs" />
     <Compile Include="Graphics\TextureConfig.cs" />
@@ -74,6 +82,7 @@
     <Compile Include="Scenes\GameScene.cs" />
     <Compile Include="Scenes\GameSceneCollection.cs" />
     <Compile Include="TypeHelper.cs" />
+    <Compile Include="TypeSwitch.cs" />
     <Compile Include="Vertex2D.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -85,6 +94,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Graphics\Shaders\ShaderProgram.Uniforms.cs" />
     <None Include="OpenTK.dll.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
