@@ -46,19 +46,30 @@ namespace Flamy2D
             
         }
 
+        int updates =0 , renders = 0;
+        double time = 0;
         protected override void Update()
         {
+            updates++;
             if (CurrentScene != null)
             {
                 CurrentScene.Update(this);
             }
 
             base.Update();
+
+            time += Time.Elapsed;
+            if (time > 1f)
+            {
+                Console.WriteLine(String.Format("UPS {0}  -- FPS {1}", updates, renders));
+                updates = 0;
+                renders = 0;
+            }
         }
 
         protected override void Render(SpriteBatch batch)
         {
-            
+            renders++;
 
             if (CurrentScene != null)
             {
