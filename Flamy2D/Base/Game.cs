@@ -97,7 +97,7 @@ namespace Flamy2D.Base
             this.Log("Loading OpenGL entry points");
             context.LoadAll();
 
-            batch = new SpriteBatch();
+            batch = new SpriteBatch(this);
 
             this.Log("Setup OpenGL");
             SetupOpenGL();

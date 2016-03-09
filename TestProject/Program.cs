@@ -14,6 +14,7 @@ namespace TestProject
             GameConfiguration config = new GameConfiguration();
             config.FPSTarget = 60;
             config.FixedFPS = true;
+            config.Resizable = true;
 
             TestGame game = new TestGame(config);
             game.Run();

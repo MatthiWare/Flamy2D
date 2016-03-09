@@ -1,4 +1,5 @@
-﻿using Flamy2D.Buffer;
+﻿using Flamy2D.Base;
+using Flamy2D.Buffer;
 using Flamy2D.Graphics.Shaders;
 using OpenTK;
 using OpenTK.Graphics;
@@ -26,13 +27,52 @@ namespace Flamy2D.Graphics
 
         private ShaderProgram program;
 
+        public Vector3 Position { get; set; }
+        public Quaternion Orientation { get; set; }
+        public Matrix4 ProjectionMatrix { get; set; }
+
+        public Resolution Resolution { get; set; }
+
+        public Matrix4 ViewMatrix
+        {
+            get
+            {
+                Matrix4 trans = Matrix4.CreateTranslation(-Position);
+                Matrix4 orientation = Matrix4.CreateFromQuaternion(Orientation);
+
+                return trans * orientation;
+            }
+        }
+
+        public Matrix4 ViewProjectionMatrix
+        {
+            get
+            {
+                return ViewMatrix * ProjectionMatrix;
+            }
+        }
+
+        public float FOV { get; set; }
+
+        private Game game;
+
         private int vertexCount;
         private int indexCount;
 
         private bool active;
 
-        public SpriteBatch(ShaderProgram shader = null)
+        public SpriteBatch(Game game, ShaderProgram shader = null)
         {
+            this.game = game;
+
+            FOV = 60f;
+
+            Orientation = Quaternion.Identity;
+            Position = Vector3.Zero;
+            Resolution = game.Resolution;
+
+            ProjectionMatrix = Matrix4.CreateOrthographicOffCenter(0, Resolution.Width, Resolution.Height, 0, 0, 16);
+
             Dot = new Texture2D(TextureConfiguration.Nearest, 1, 1);
             Dot.SetData(new[] { Color4.White }, null, type: OpenTK.Graphics.OpenGL4.PixelType.Float);
 
@@ -161,9 +201,9 @@ namespace Flamy2D.Graphics
             float srcW = src.Width;
             float srcH = src.Height;
 
-            Vector2 topLeft = new Vector2(srcX / (float)tex.Width, srcY/(float)tex.Height);
+            Vector2 topLeft = new Vector2(srcX / (float)tex.Width, srcY / (float)tex.Height);
 
-            Vector2 topRight = new Vector2((srcX + srcW) / (float)tex.Width, srcY/(float)tex.Height);
+            Vector2 topRight = new Vector2((srcX + srcW) / (float)tex.Width, srcY / (float)tex.Height);
 
             Vector2 bottomLeft = new Vector2(srcX / (float)tex.Width, (srcY + srcH) / (float)tex.Height);
 
@@ -204,7 +244,7 @@ namespace Flamy2D.Graphics
 
             // Bottom Right
             Vertices[vertexCount++] = new Vertex2D(
-                pos: new Vector3(x+w, y+h, depth),
+                pos: new Vector3(x + w, y + h, depth),
                 text: bottomRight,
                 color: color
             );
@@ -308,7 +348,7 @@ namespace Flamy2D.Graphics
 
                 ibo.Bind();
 
-                program["MVP"] = CurrentCamera.ViewProjectionMatrix;
+                program["MVP"] = ViewProjectionMatrix;
 
                 GL.DrawElements(BeginMode.Triangles, ibo.Buffer.Count, DrawElementsType.UnsignedInt, 0);
 
