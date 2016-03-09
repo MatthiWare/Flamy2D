@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flamy2D", "Flamy2D\Flamy2D.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{5AE50A5B-385F-4F06-8DF0-BB89CD75104E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flamy2D.Imaging", "Flamy2D.Imaging\Flamy2D.Imaging.csproj", "{76889EE5-050C-4AA8-B453-428A063B3442}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{5AE50A5B-385F-4F06-8DF0-BB89CD75104E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AE50A5B-385F-4F06-8DF0-BB89CD75104E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AE50A5B-385F-4F06-8DF0-BB89CD75104E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76889EE5-050C-4AA8-B453-428A063B3442}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76889EE5-050C-4AA8-B453-428A063B3442}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76889EE5-050C-4AA8-B453-428A063B3442}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76889EE5-050C-4AA8-B453-428A063B3442}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

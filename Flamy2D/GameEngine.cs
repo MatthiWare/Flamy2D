@@ -1,6 +1,7 @@
 ﻿using System;
 using Flamy2D.Base;
 using Flamy2D.Scenes;
+using Flamy2D.Graphics;
 
 namespace Flamy2D
 {
@@ -45,24 +46,39 @@ namespace Flamy2D
             
         }
 
+        int updates =0 , renders = 0;
+        double time = 0;
         protected override void Update()
         {
-            base.Update();
-
+            updates++;
             if (CurrentScene != null)
             {
-                CurrentScene.Update();
+                CurrentScene.Update(this);
+            }
+
+            base.Update();
+
+            time += Time.Elapsed;
+            if (time > 1f)
+            {
+                Console.WriteLine(String.Format("UPS {0}  -- FPS {1}", updates, renders));
+                updates = 0;
+                renders = 0;
             }
         }
 
-        protected override void Render()
+        protected override void Render(SpriteBatch batch)
         {
-            base.Render();
+            renders++;
 
             if (CurrentScene != null)
             {
-                CurrentScene.Render();
+                batch.Begin();
+                CurrentScene.Render(this, batch);
+                batch.End();
             }
+
+            base.Render(batch);
         }
     }
 }
