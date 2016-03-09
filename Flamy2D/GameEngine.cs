@@ -48,17 +48,17 @@ namespace Flamy2D
 
         protected override void Update()
         {
-            base.Update();
-
             if (CurrentScene != null)
             {
                 CurrentScene.Update(this);
             }
+
+            base.Update();
         }
 
         protected override void Render(SpriteBatch batch)
         {
-            base.Render(batch);
+            
 
             if (CurrentScene != null)
             {
@@ -67,7 +67,7 @@ namespace Flamy2D
                 batch.End();
             }
 
-            
+            base.Render(batch);
         }
     }
 }

@@ -16,6 +16,7 @@ namespace TestProject
             
         }
 
+        bool render = true;
         public void Update(GameEngine game)
         {
             if (!initialized)
@@ -28,15 +29,19 @@ namespace TestProject
                 initialized = true;
             }
 
-            if (game.Keyboard.IsAnyKeyDown(Key.Q, Key.Left))
+            
+            if (game.Keyboard.IsAnyKeyDown(Key.Q, Key.Left) && render)
             {
-                x -= 0.5f;
+                x += 5f;
+                render = false;
             }
+
+
         }
 
         public void Render(GameEngine game, SpriteBatch batch)
         {
-            batch.Draw(texture, x, y, Color4.Red);
+            batch.Draw(texture, x, y, Color4.White);
         }
     }
 }
