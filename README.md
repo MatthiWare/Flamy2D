@@ -4,4 +4,22 @@
 #
 [![Flamy](https://raw.githubusercontent.com/MatthiWare/Flamy2D/master/Flamy.png)](https://www.facebook.com/flamy2d/)
 #
-An open source 2D game engine made in C#
+#An open source 2D game engine made in C# 
+#
+###Features
+
+##### Platform
+- Windows 10 / 8 / 7
+
+##### API
+- OpenGL 4+ / GLSL
+
+##### Texture support
+- JPG, PNG, BMP, PSD, GIF, HDR, PIC
+
+##### Audio
+
+##### Fonts
+
+##### Scene Features
+- Scene management, extend predefined classes to implement your own scenes. 
