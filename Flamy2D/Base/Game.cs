@@ -51,7 +51,7 @@ namespace Flamy2D.Base
             Closing = false;
 
             Keyboard = new Keyboard();
-           Time = new GameTime();
+             Time = new GameTime();
         }
 
         /// <summary>
@@ -142,8 +142,13 @@ namespace Flamy2D.Base
 
             Update();
 
-            while (Configuration.FixedFPS && (frameDelta += Time.Update()) < updatesPerSec)
+            while (Configuration.FixedFPS && frameDelta < updatesPerSec)
+            {
                 Update();
+                frameDelta += Time.Update();
+            }
+
+            frameDelta = 0;
         }
 
         protected virtual void Update() { }
@@ -157,7 +162,7 @@ namespace Flamy2D.Base
         {
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-            GL.ClearColor(Color4.Blue);
+            GL.ClearColor(Color4.CornflowerBlue);
         }
 
         /// <summary>
