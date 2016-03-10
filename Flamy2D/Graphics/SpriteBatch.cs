@@ -152,6 +152,11 @@ namespace Flamy2D.Graphics
             Draw(tex, new Vector2(x, y), color, 1f);
         }
 
+        public void Draw(Texture2D tex, float x, float y, Color4 color, float scale, float depth = 0, SpriteEffects effects = SpriteEffects.None)
+        {
+            Draw(tex, new Vector2(x, y), color, scale, depth, effects);
+        }
+
         public void Draw(Texture2D tex, Vector2 pos, Color4 color, float scale, float depth=0, SpriteEffects effects = SpriteEffects.None)
         {
             Rectangle destRect = new Rectangle((int)pos.X, (int)pos.Y, tex.Width, tex.Height);

@@ -11,17 +11,18 @@ namespace TestProject
         private float x, y;
         private int width, height;
         private bool initialized = false;
+        private float speed = 30f;
+        private float scale = 2f;
         public Player()
         {
             
         }
 
-        bool render = true;
         public void Update(GameEngine game)
         {
             if (!initialized)
             {
-                texture = Texture2D.LoadFromFile("./Content/sprite.png", TextureConfiguration.Linear);
+                texture = Texture2D.LoadFromFile("./Content/sprite.png", TextureConfiguration.Nearest);
                 width = texture.Width;
                 height = texture.Height;
                 x = 50;
@@ -29,11 +30,25 @@ namespace TestProject
                 initialized = true;
             }
 
-            
-            if (game.Keyboard.IsAnyKeyDown(Key.Q, Key.Left) && render)
+
+            if (game.Keyboard.IsAnyKeyDown(Key.Q, Key.Left))
             {
-                x += 5f;
-                render = false;
+                x -= (float)(speed * game.Time.Elapsed);
+            }
+
+            if (game.Keyboard.IsAnyKeyDown(Key.D, Key.Right))
+            {
+                x += (float)(speed * game.Time.Elapsed);
+            }
+
+            if (game.Keyboard.IsAnyKeyDown(Key.Z, Key.Up))
+            {
+                y -= (float)(speed * game.Time.Elapsed);
+            }
+
+            if (game.Keyboard.IsAnyKeyDown(Key.S, Key.Down))
+            {
+                y += (float)(speed * game.Time.Elapsed);
             }
 
 
@@ -41,7 +56,7 @@ namespace TestProject
 
         public void Render(GameEngine game, SpriteBatch batch)
         {
-            batch.Draw(texture, x, y, Color4.White);
+            batch.Draw(texture, x, y, new Color4(255,255,255,255), scale);
         }
     }
 }

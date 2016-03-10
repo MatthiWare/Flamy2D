@@ -64,6 +64,7 @@ namespace Flamy2D
                 Console.WriteLine(String.Format("UPS {0}  -- FPS {1}", updates, renders));
                 updates = 0;
                 renders = 0;
+                time = 0;
             }
         }
 
