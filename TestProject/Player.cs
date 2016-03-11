@@ -7,26 +7,41 @@ namespace TestProject
 {
     public class Player
     {
-        private Texture2D texture;
+        private Texture2D[] textures;
+        private Texture2D tex;
         private float x, y;
+        private float drawX, drawY;
         private int width, height;
         private bool initialized = false;
-        private float speed = 30f;
+        private float speed = 100f;
         private float scale = 2f;
+        private double c = 0;
+        private float changer = 0.35f;
+        private bool switcher = true;
         public Player()
         {
-            
+            textures=new Texture2D[8];
         }
 
         public void Update(GameEngine game)
         {
+            TestGame g = (TestGame) game;
+
             if (!initialized)
             {
-                texture = Texture2D.LoadFromFile("./Content/sprite.png", TextureConfiguration.Nearest);
-                width = texture.Width;
-                height = texture.Height;
-                x = 50;
-                y = 100;
+                for (int i = 0; i < textures.Length; i++)
+                {
+                    textures[i] = Texture2D.LoadFromFile("../../../Content/TestProject/spr_speler_" + i+".png", TextureConfiguration.Nearest);
+                }
+
+                tex = textures[0];
+                
+                width = tex.Width;
+                height = tex.Height;
+                x = (float)game.Configuration.Width / 2 + ((float)width / 2);
+                y = (float)game.Configuration.Height / 2 + ((float)height / 2);
+                drawX = (float)game.Configuration.Width / 2 + ((float)width / 2);
+                drawY = (float)game.Configuration.Height / 2 + ((float)height / 2);
                 initialized = true;
             }
 
@@ -34,21 +49,49 @@ namespace TestProject
             if (game.Keyboard.IsAnyKeyDown(Key.Q, Key.Left))
             {
                 x -= (float)(speed * game.Time.Elapsed);
+                g.camera.x-= (float)(speed * game.Time.Elapsed);
+                if (switcher)
+                    tex = textures[4];
+                else
+                    tex = textures[5];
             }
 
             if (game.Keyboard.IsAnyKeyDown(Key.D, Key.Right))
             {
                 x += (float)(speed * game.Time.Elapsed);
+                g.camera.x += (float)(speed * game.Time.Elapsed);
+                if (switcher)
+                    tex = textures[0];
+                else
+                    tex = textures[1];
             }
 
             if (game.Keyboard.IsAnyKeyDown(Key.Z, Key.Up))
             {
                 y -= (float)(speed * game.Time.Elapsed);
+                g.camera.y -= (float)(speed * game.Time.Elapsed);
+                if (switcher)
+                    tex = textures[2];
+                else
+                    tex = textures[3];
             }
 
             if (game.Keyboard.IsAnyKeyDown(Key.S, Key.Down))
             {
                 y += (float)(speed * game.Time.Elapsed);
+                g.camera.y += (float)(speed * game.Time.Elapsed);
+                if (switcher)
+                    tex = textures[6];
+                else
+                    tex = textures[7];
+            }
+
+            c += game.Time.Elapsed;
+
+            if (c > changer)
+            {
+                c = 0;
+                switcher = !switcher;
             }
 
 
@@ -56,7 +99,7 @@ namespace TestProject
 
         public void Render(GameEngine game, SpriteBatch batch)
         {
-            batch.Draw(texture, x, y, new Color4(255,255,255,255), scale);
+            batch.Draw(tex, drawX, drawY, Color4.White, scale);
         }
     }
 }
