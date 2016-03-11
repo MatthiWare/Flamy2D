@@ -38,10 +38,10 @@ namespace TestProject
                 
                 width = tex.Width;
                 height = tex.Height;
-                x = (float)game.Configuration.Width / 2 + ((float)width / 2);
-                y = (float)game.Configuration.Height / 2 + ((float)height / 2);
-                drawX = (float)game.Configuration.Width / 2 + ((float)width / 2);
-                drawY = (float)game.Configuration.Height / 2 + ((float)height / 2);
+                x = (float)game.Configuration.Width / 2 - ((float)width / 2);
+                y = (float)game.Configuration.Height / 2 - ((float)height / 2);
+                drawX = (float)game.Configuration.Width / 2 - ((float)width / 2);
+                drawY = (float)game.Configuration.Height / 2 - ((float)height / 2);
                 initialized = true;
             }
 
