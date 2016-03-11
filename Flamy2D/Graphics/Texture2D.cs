@@ -1,4 +1,5 @@
-﻿using Flamy2D.Imaging;
+﻿using Flamy2D.Assets;
+using Flamy2D.Imaging;
 using OpenTK.Graphics.OpenGL4;
 using System;
 using System.Drawing;
@@ -6,7 +7,7 @@ using System.IO;
 
 namespace Flamy2D.Graphics
 {
-    public class Texture2D
+    public class Texture2D : IAsset
     {
         public int TextureId { get; private set; }
 

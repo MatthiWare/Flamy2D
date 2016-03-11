@@ -6,6 +6,7 @@ using Flamy2D.Input;
 using System.Threading;
 using OpenTK.Graphics.OpenGL4;
 using Flamy2D.Graphics;
+using Flamy2D.Assets;
 
 namespace Flamy2D.Base
 {
@@ -14,6 +15,8 @@ namespace Flamy2D.Base
     /// </summary>
     public class Game : ILog
     {
+
+        public ContentManager Content { get; private set; }
 
         /// <summary>
         /// The game configuration. 
@@ -52,6 +55,8 @@ namespace Flamy2D.Base
 
             Keyboard = new Keyboard();
              Time = new GameTime();
+
+            Content = new ContentManager();
         }
 
         /// <summary>
@@ -120,7 +125,6 @@ namespace Flamy2D.Base
                 updating = true; 
 
                 InternUpdate();
-                GL.Clear(ClearBufferMask.ColorBufferBit);
                 Render(batch);
 
                 updating = false;
@@ -162,7 +166,6 @@ namespace Flamy2D.Base
         {
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-            GL.ClearColor(Color4.CornflowerBlue);
         }
 
         /// <summary>
