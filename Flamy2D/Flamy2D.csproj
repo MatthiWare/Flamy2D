@@ -52,6 +52,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\AssetHandler.cs" />
+    <Compile Include="Assets\ContentManager.cs" />
+    <Compile Include="Assets\IAsset.cs" />
     <Compile Include="Buffer\GLBuffer.cs" />
     <Compile Include="Buffer\GLBufferDynamic.cs" />
     <Compile Include="Buffer\GLBufferSettings.cs" />
