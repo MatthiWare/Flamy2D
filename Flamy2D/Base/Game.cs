@@ -7,6 +7,8 @@ using System.Threading;
 using OpenTK.Graphics.OpenGL4;
 using Flamy2D.Graphics;
 using Flamy2D.Assets;
+using System;
+using Flamy2D.Assets.Providers;
 
 namespace Flamy2D.Base
 {
@@ -107,6 +109,10 @@ namespace Flamy2D.Base
             this.Log("Setup OpenGL");
             SetupOpenGL();
 
+            LoadAssetProviders();
+
+            Load();
+
             window.Visible = true;
 
             CalculateTimings();
@@ -134,6 +140,11 @@ namespace Flamy2D.Base
             Time.Stop();
         }
 
+        public virtual void LoadAssetProviders()
+        {
+            Content.RegisterAssetHandler<Texture2D>(typeof(TextureProvider));
+        }
+
         private void CalculateTimings()
         {
             updatesPerSec = 1.0 / (double)Configuration.FPSTarget;
@@ -154,6 +165,8 @@ namespace Flamy2D.Base
 
             frameDelta = 0;
         }
+
+        protected virtual void Load() { }
 
         protected virtual void Update() { }
         protected virtual void Render(SpriteBatch batch)

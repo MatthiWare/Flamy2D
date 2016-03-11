@@ -65,6 +65,7 @@
     <Compile Include="Base\Game.cs" />
     <Compile Include="Base\GameTime.cs" />
     <Compile Include="GameEngine.cs" />
+    <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="Graphics\InterpolationMode.cs" />
     <Compile Include="Graphics\Shaders\BasicShader.cs" />
     <Compile Include="Graphics\Shaders\FragmentShader.cs" />

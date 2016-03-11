@@ -1,18 +1,19 @@
-﻿using Flamy2D;
+﻿using System;
+using Flamy2D;
+using Flamy2D.GameObjects;
 using Flamy2D.Graphics;
 using OpenTK.Graphics;
 using OpenTK.Input;
 
 namespace TestProject
 {
-    public class Player
+    public class Player : GameObject
     {
         private Texture2D[] textures;
         private Texture2D tex;
         private float x, y;
         private float drawX, drawY;
         private int width, height;
-        private bool initialized = false;
         private float speed = 100f;
         private float scale = 2f;
         private double c = 0;
@@ -23,29 +24,29 @@ namespace TestProject
             textures=new Texture2D[8];
         }
 
-        public void Update(GameEngine game)
+        public override void Load(GameEngine game)
         {
-            TestGame g = (TestGame) game;
-
-            if (!initialized)
+            for (int i = 0; i < textures.Length; i++)
             {
-                for (int i = 0; i < textures.Length; i++)
-                {
-                    textures[i] = Texture2D.LoadFromFile("../../../Content/TestProject/spr_speler_" + i+".png", TextureConfiguration.Nearest);
-                }
-
-                tex = textures[0];
-                
-                width = tex.Width;
-                height = tex.Height;
-                x = (float)game.Configuration.Width / 2 - ((float)width / 2);
-                y = (float)game.Configuration.Height / 2 - ((float)height / 2);
-                drawX = (float)game.Configuration.Width / 2 - ((float)width / 2);
-                drawY = (float)game.Configuration.Height / 2 - ((float)height / 2);
-                initialized = true;
+                textures[i] = game.Content.Load<Texture2D>("spr_speler_" + i + ".png", TextureConfiguration.Nearest);
             }
 
+            tex = textures[0];
 
+            width = tex.Width;
+            height = tex.Height;
+            x = ((float)game.Configuration.Width / 2) - ((float)width / 2);
+            y = ((float)game.Configuration.Height / 2) - ((float)height / 2);
+            drawX = ((float)game.Configuration.Width / 2) - ((float)width / 2);
+            drawY = ((float)game.Configuration.Height / 2) - ((float)height / 2);
+        }
+
+        public override void Update(GameEngine game)
+        {
+            base.Update(game);
+
+            TestGame g = (TestGame) game;
+            
             if (game.Keyboard.IsAnyKeyDown(Key.Q, Key.Left))
             {
                 x -= (float)(speed * game.Time.Elapsed);
@@ -93,11 +94,11 @@ namespace TestProject
                 c = 0;
                 switcher = !switcher;
             }
-
-
         }
 
-        public void Render(GameEngine game, SpriteBatch batch)
+        
+
+        public override void Render(GameEngine game, SpriteBatch batch)
         {
             batch.Draw(tex, drawX, drawY, Color4.White, scale);
         }
