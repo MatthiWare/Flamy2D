@@ -6,6 +6,9 @@ using Flamy2D.Input;
 using System.Threading;
 using OpenTK.Graphics.OpenGL4;
 using Flamy2D.Graphics;
+using Flamy2D.Assets;
+using System;
+using Flamy2D.Assets.Providers;
 
 namespace Flamy2D.Base
 {
@@ -14,6 +17,8 @@ namespace Flamy2D.Base
     /// </summary>
     public class Game : ILog
     {
+
+        public ContentManager Content { get; private set; }
 
         /// <summary>
         /// The game configuration. 
@@ -52,6 +57,8 @@ namespace Flamy2D.Base
 
             Keyboard = new Keyboard();
              Time = new GameTime();
+
+            Content = new ContentManager();
         }
 
         /// <summary>
@@ -102,6 +109,10 @@ namespace Flamy2D.Base
             this.Log("Setup OpenGL");
             SetupOpenGL();
 
+            LoadAssetProviders();
+
+            Load();
+
             window.Visible = true;
 
             CalculateTimings();
@@ -120,7 +131,6 @@ namespace Flamy2D.Base
                 updating = true; 
 
                 InternUpdate();
-                GL.Clear(ClearBufferMask.ColorBufferBit);
                 Render(batch);
 
                 updating = false;
@@ -128,6 +138,11 @@ namespace Flamy2D.Base
             this.Log("Exited game loop");
 
             Time.Stop();
+        }
+
+        public virtual void LoadAssetProviders()
+        {
+            Content.RegisterAssetHandler<Texture2D>(typeof(TextureProvider));
         }
 
         private void CalculateTimings()
@@ -151,6 +166,8 @@ namespace Flamy2D.Base
             frameDelta = 0;
         }
 
+        protected virtual void Load() { }
+
         protected virtual void Update() { }
         protected virtual void Render(SpriteBatch batch)
         {
@@ -162,7 +179,6 @@ namespace Flamy2D.Base
         {
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-            GL.ClearColor(Color4.CornflowerBlue);
         }
 
         /// <summary>
