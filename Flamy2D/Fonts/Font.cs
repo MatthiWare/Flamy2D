@@ -141,11 +141,22 @@ namespace Flamy2D.Fonts
 
                 GlyphInfo glyph = GetGlyph(c);
 
-                batch.Draw(
-                        glyph.Texture,
-                        glyph.Rectangle,
-                        new Rectangle((int)penX + glyph.XOffset, (int)penY + (LineHeight - glyph.YOffset), glyph.Rectangle.Width, glyph.Rectangle.Height),
-                        color);
+                if (glyph.Render)
+                {
+                    batch.Draw(
+                            glyph.Texture,
+                            glyph.Rectangle,
+                            new Rectangle((int)penX + glyph.XOffset, (int)penY + (LineHeight - glyph.YOffset), glyph.Rectangle.Width, glyph.Rectangle.Height),
+                            color);
+
+                    penX += glyph.AdvanceX;
+                }
+                else
+                {
+                    penX += glyph.AdvanceX;
+                }
+
+                
 
                 if (i < text.Length - 1)
                 {

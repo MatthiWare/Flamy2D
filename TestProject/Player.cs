@@ -21,6 +21,7 @@ namespace TestProject
         private float changer = 0.35f;
         private bool switcher = true;
         private Font font;
+        private Text text;
 
         public Player()
         {
@@ -42,7 +43,8 @@ namespace TestProject
             y = ((float)game.Configuration.Height / 2) - ((float)height / 2);
             drawX = ((float)game.Configuration.Width / 2) - ((float)width / 2);
             drawY = ((float)game.Configuration.Height / 2) - ((float)height / 2);
-             font = game.Content.Load<Font>("Ancient Medium.ttf", 50f);
+             font = game.Content.Load<Font>("LVDCC.TTF", 50f);
+            text = new Text("Het werkt gg ez!", font, x, y);
         }
 
         public override void Update(GameEngine game)
@@ -98,6 +100,8 @@ namespace TestProject
                 c = 0;
                 switcher = !switcher;
             }
+
+            text.Update(g);
         }
 
         
@@ -105,7 +109,7 @@ namespace TestProject
         public override void Render(GameEngine game, SpriteBatch batch)
         {
             batch.Draw(tex, drawX, drawY, Color4.White, scale);
-            font.DrawString(batch, "S", (int)drawX, (int)drawY-10, Color4.White);
+            text.Render(game, batch);
         }
     }
 }
