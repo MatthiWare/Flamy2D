@@ -71,7 +71,7 @@ namespace Flamy2D.Fonts
             return size;
         }
 
-        unsafe void AddCharacter(uint c)
+        private void AddCharacter(uint c)
         {
             if (c == (uint)'\t')
             {

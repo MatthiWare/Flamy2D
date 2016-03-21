@@ -109,7 +109,6 @@
     <Compile Include="Buffer\GLBufferSettings.cs" />
     <Compile Include="Extensions\ILog.cs" />
     <Compile Include="Extensions\LogExtensions.cs" />
-    <Compile Include="Fonts\CodepointerIterator.cs" />
     <Compile Include="Fonts\Font.cs" />
     <Compile Include="Fonts\GlyphInfo.cs" />
     <Compile Include="Fonts\RGBA.cs" />
