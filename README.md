@@ -20,6 +20,7 @@
 ##### Audio
 
 ##### Fonts
+- True Type Font Format (ttf)
 
 ##### Scene Features
 - Scene management, extend predefined classes to implement your own scenes. 
