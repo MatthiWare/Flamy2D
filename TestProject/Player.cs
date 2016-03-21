@@ -4,6 +4,7 @@ using Flamy2D.GameObjects;
 using Flamy2D.Graphics;
 using OpenTK.Graphics;
 using OpenTK.Input;
+using Flamy2D.Fonts;
 
 namespace TestProject
 {
@@ -19,6 +20,9 @@ namespace TestProject
         private double c = 0;
         private float changer = 0.35f;
         private bool switcher = true;
+        private Font font;
+        private Text text;
+
         public Player()
         {
             textures=new Texture2D[8];
@@ -39,6 +43,8 @@ namespace TestProject
             y = ((float)game.Configuration.Height / 2) - ((float)height / 2);
             drawX = ((float)game.Configuration.Width / 2) - ((float)width / 2);
             drawY = ((float)game.Configuration.Height / 2) - ((float)height / 2);
+             font = game.Content.Load<Font>("LVDCC.TTF", 50f);
+            text = new Text("Het werkt gg ez!", font, x, y);
         }
 
         public override void Update(GameEngine game)
@@ -94,6 +100,8 @@ namespace TestProject
                 c = 0;
                 switcher = !switcher;
             }
+
+            text.Update(g);
         }
 
         
@@ -101,6 +109,7 @@ namespace TestProject
         public override void Render(GameEngine game, SpriteBatch batch)
         {
             batch.Draw(tex, drawX, drawY, Color4.White, scale);
+            text.Render(game, batch);
         }
     }
 }

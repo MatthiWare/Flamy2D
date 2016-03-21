@@ -1,25 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace Flamy2D.Imaging
 {
     public static class ImageLib
     {
+        [DllImport("stb_image.dll")]
+        private static extern IntPtr stbi_load(string filename, ref int x, ref int y, ref int n, int req_comp);
+
+        [DllImport("stb_image.dll")]
+        private static extern void stbi_image_free(IntPtr data);
+
+        private static void SetUnmanagedDllDirectory()
+        {
+            string path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            path = Path.Combine(path, IntPtr.Size == 8 ? "win64 " : "win32");
+            if (!SetDllDirectory(path)) throw new System.ComponentModel.Win32Exception();
+        }
+
+        /// <summary>
+        /// Sets the path where the unmanaged libs are located. 
+        /// </summary>
+        /// <param name="path">The unmanaged libs path. </param>
+        /// <returns></returns>
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern bool SetDllDirectory(string path);
+
         public static IntPtr Load(string filename, ref int x, ref int y, ref int n, int req_comp)
         {
+         //   SetUnmanagedDllDirectory();
             switch (Environment.OSVersion.Platform)
             {
                 case PlatformID.Win32NT:
                 case PlatformID.Win32S:
                 case PlatformID.Win32Windows:
                 case PlatformID.WinCE:
-                    if (Environment.Is64BitProcess)
-                        return Win64.stbi_load(filename, ref x, ref y, ref n, req_comp);
-                    else
-                        return Win32.stbi_load(filename, ref x, ref y, ref n, req_comp);
+                        return stbi_load(filename, ref x, ref y, ref n, req_comp);
                 default:
                     throw new NotSupportedException("OS is not supported");
             }
@@ -33,32 +51,11 @@ namespace Flamy2D.Imaging
                 case PlatformID.Win32S:
                 case PlatformID.Win32Windows:
                 case PlatformID.WinCE:
-                    if (Environment.Is64BitProcess)
-                        Win64.stbi_image_free(data);
-                    else
-                        Win32.stbi_image_free(data);
+                    stbi_image_free(data);
                     break;
                 default:
                     throw new NotSupportedException("OS is not supported");
             }
-        }
-
-        class Win64
-        {
-            [DllImport("stb_image-win64.dll")]
-            public static extern IntPtr stbi_load(string filename, ref int x, ref int y, ref int n, int req_comp);
-
-            [DllImport("stb_image-win64.dll")]
-            public static extern void stbi_image_free(IntPtr data);
-        }
-
-        class Win32
-        {
-            [DllImport("stb_image-win32.dll")]
-            public static extern IntPtr stbi_load(string filename, ref int x, ref int y, ref int n, int req_comp);
-
-            [DllImport("stb_image-win32.dll")]
-            public static extern void stbi_image_free(IntPtr data);
         }
 
     }
