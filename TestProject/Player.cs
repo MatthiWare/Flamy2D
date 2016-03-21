@@ -42,7 +42,7 @@ namespace TestProject
             y = ((float)game.Configuration.Height / 2) - ((float)height / 2);
             drawX = ((float)game.Configuration.Width / 2) - ((float)width / 2);
             drawY = ((float)game.Configuration.Height / 2) - ((float)height / 2);
-             font = game.Content.Load<Font>("Ancient Medium.ttf", 12f);
+             font = game.Content.Load<Font>("Ancient Medium.ttf", 50f);
         }
 
         public override void Update(GameEngine game)
@@ -105,7 +105,7 @@ namespace TestProject
         public override void Render(GameEngine game, SpriteBatch batch)
         {
             batch.Draw(tex, drawX, drawY, Color4.White, scale);
-            font.DrawString(batch, "text", (int)drawX, (int)drawY-10, Color4.White);
+            font.DrawString(batch, "S", (int)drawX, (int)drawY-10, Color4.White);
         }
     }
 }

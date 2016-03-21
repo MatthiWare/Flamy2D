@@ -106,7 +106,7 @@ namespace Flamy2D.Fonts
 
             Rectangle r = new Rectangle(0, 0, face.Glyph.Bitmap.Width, face.Glyph.Bitmap.Rows);
             Texture2D tex = new Texture2D(TextureConfiguration.Linear, r.Width, r.Height);
-            tex.SetData(face.Glyph.Bitmap.Buffer, r);
+            tex.SetData(pixels, r);
 
             GlyphInfo info = new GlyphInfo(tex, r,
                 face.Glyph.Advance.X.Ceiling(),
