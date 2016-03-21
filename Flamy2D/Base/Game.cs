@@ -9,6 +9,10 @@ using Flamy2D.Graphics;
 using Flamy2D.Assets;
 using System;
 using Flamy2D.Assets.Providers;
+using Flamy2D.Fonts;
+using System.Runtime.InteropServices;
+using System.IO;
+using System.Reflection;
 
 namespace Flamy2D.Base
 {
@@ -49,6 +53,15 @@ namespace Flamy2D.Base
 
         // Timings data
         private double updatesPerSec;
+
+        /// <summary>
+        /// Initializes the static game
+        /// See <see cref="SetUnmanagedDllDirectory"/> for more information. 
+        /// </summary>
+        static Game()
+        {
+            //SetUnmanagedDllDirectory();
+        }
 
         public Game(GameConfiguration config)
         {
@@ -143,6 +156,7 @@ namespace Flamy2D.Base
         public virtual void LoadAssetProviders()
         {
             Content.RegisterAssetHandler<Texture2D>(typeof(TextureProvider));
+            Content.RegisterAssetHandler<Font>(typeof(FontProvider));
         }
 
         private void CalculateTimings()
@@ -265,6 +279,26 @@ namespace Flamy2D.Base
         {
 
         }
+
+        /// <summary>
+        /// Prepares the Game to load unmanaged libraries from their designated folder 
+        /// ./x64/ or ./x86/
+        /// This allows for an easy implementation of unmanaged libs
+        /// </summary>
+        private static void SetUnmanagedDllDirectory()
+        {
+            string path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            path = Path.Combine(path, IntPtr.Size == 8 ? "win64 " : "win32");
+            if (!SetDllDirectory(path)) throw new System.ComponentModel.Win32Exception();
+        }
+
+        /// <summary>
+        /// Sets the path where the unmanaged libs are located. 
+        /// </summary>
+        /// <param name="path">The unmanaged libs path. </param>
+        /// <returns></returns>
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern bool SetDllDirectory(string path);
 
     }
 }
