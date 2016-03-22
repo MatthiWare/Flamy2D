@@ -5,6 +5,7 @@ using Flamy2D.Graphics;
 using OpenTK.Graphics;
 using OpenTK.Input;
 using Flamy2D.Fonts;
+using Flamy2D.Audio;
 
 namespace TestProject
 {
@@ -22,6 +23,7 @@ namespace TestProject
         private bool switcher = true;
         private Font font;
         private Text text;
+        private Sound sound;
 
         public Player()
         {
@@ -45,6 +47,7 @@ namespace TestProject
             drawY = ((float)game.Configuration.Height / 2) - ((float)height / 2);
              font = game.Content.Load<Font>("LVDCC.TTF", 50f);
             text = new Text("Het werkt gg ez!", font, x, y);
+            sound = game.Content.Load<Sound>("3test.ogg");
         }
 
         public override void Update(GameEngine game)
@@ -52,7 +55,12 @@ namespace TestProject
             base.Update(game);
 
             TestGame g = (TestGame) game;
-            
+
+            if (game.Keyboard.IsKeyDown(Key.S))
+            {
+                sound.Play();
+            }
+
             if (game.Keyboard.IsAnyKeyDown(Key.Q, Key.Left))
             {
                 x -= (float)(speed * game.Time.Elapsed);
