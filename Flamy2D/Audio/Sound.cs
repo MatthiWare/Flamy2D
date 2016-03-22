@@ -1,5 +1,6 @@
 ﻿using Flamy2D.Assets;
 using NVorbis;
+using OpenTK.Audio;
 using OpenTK.Audio.OpenAL;
 using System;
 using System.IO;
@@ -8,10 +9,15 @@ namespace Flamy2D.Audio
 {
     public class Sound : IDisposable, IAsset
     {
+        static Sound()
+        {
+            AudioContext c = new AudioContext();
+        }
+
         const int DEFAULT_BUFFER_COUNT = 3;
 
-        private static readonly XRamExtension XRam = new XRamExtension();
-        private static readonly EffectsExtension Efx = new EffectsExtension();
+        private static readonly XRamExtension XRam;//= new XRamExtension();
+        private static readonly EffectsExtension Efx;// = new EffectsExtension();
 
         private readonly object stopMutex = new object();
         private readonly object prepareMutex = new object();
@@ -49,12 +55,12 @@ namespace Flamy2D.Audio
             get { return _lowPassHfGain; }
             set
             {
-                if (Efx.IsInitialized)
-                {
-                    Efx.Filter(alFilterId, EfxFilterf.LowpassGainHF, _lowPassHfGain = value);
-                    Efx.BindFilterToSource(alSourceId, alFilterId);
-                    ALHelper.Check();
-                }
+                //if (Efx.IsInitialized)
+                //{
+                //    Efx.Filter(alFilterId, EfxFilterf.LowpassGainHF, _lowPassHfGain = value);
+                //    Efx.BindFilterToSource(alSourceId, alFilterId);
+                //    ALHelper.Check();
+                //}
             }
         }
 
@@ -72,19 +78,21 @@ namespace Flamy2D.Audio
 
             Volume = 1f;
 
-            if (XRam.IsInitialized)
-            {
-                XRam.SetBufferMode(bufferCount, ref alBufferIds[0], XRamExtension.XRamStorage.Hardware);
-                ALHelper.Check();
-            }
+            XRamExtension x = new XRamExtension();
 
-            if (Efx.IsInitialized)
-            {
-                alFilterId = Efx.GenFilter();
-                Efx.Filter(alFilterId, EfxFilteri.FilterType, (int)EfxFilterType.Lowpass);
-                Efx.Filter(alFilterId, EfxFilterf.LowpassGain, 1);
-                _lowPassHfGain = 1;
-            }
+            //if (XRam.IsInitialized)
+            //{
+            //    XRam.SetBufferMode(bufferCount, ref alBufferIds[0], XRamExtension.XRamStorage.Hardware);
+            //    ALHelper.Check();
+            //}
+
+            //if (Efx.IsInitialized)
+            //{
+            //    alFilterId = Efx.GenFilter();
+            //    Efx.Filter(alFilterId, EfxFilteri.FilterType, (int)EfxFilterType.Lowpass);
+            //    Efx.Filter(alFilterId, EfxFilterf.LowpassGain, 1);
+            //    _lowPassHfGain = 1;
+            //}
         }
 
         public void Prepare()
@@ -255,8 +263,8 @@ namespace Flamy2D.Audio
             AL.DeleteSource(alSourceId);
             AL.DeleteBuffers(alBufferIds);
 
-            if (Efx.IsInitialized)
-                Efx.DeleteFilter(alFilterId);
+            //if (Efx.IsInitialized)
+            //    Efx.DeleteFilter(alFilterId);
 
             ALHelper.Check();
         }
