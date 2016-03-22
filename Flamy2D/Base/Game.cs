@@ -13,6 +13,7 @@ using Flamy2D.Fonts;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Reflection;
+using Flamy2D.Audio;
 
 namespace Flamy2D.Base
 {
@@ -157,6 +158,7 @@ namespace Flamy2D.Base
         {
             Content.RegisterAssetHandler<Texture2D>(typeof(TextureProvider));
             Content.RegisterAssetHandler<Font>(typeof(FontProvider));
+            Content.RegisterAssetHandler<Sound>(typeof(SoundProvider));
         }
 
         private void CalculateTimings()
