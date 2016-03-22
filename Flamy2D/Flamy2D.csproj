@@ -108,6 +108,7 @@
     <Compile Include="Assets\IAsset.cs" />
     <Compile Include="Assets\Providers\FontProvider.cs" />
     <Compile Include="Assets\Providers\TextureProvider.cs" />
+    <Compile Include="Audio\Sound.cs" />
     <Compile Include="Buffer\GLBuffer.cs" />
     <Compile Include="Buffer\GLBufferDynamic.cs" />
     <Compile Include="Buffer\GLBufferSettings.cs" />
