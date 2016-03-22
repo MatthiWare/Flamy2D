@@ -8,13 +8,22 @@ namespace Flamy2D.Assets.Providers
 {
     public class SoundProvider : AssetHandler<Sound>
     {
+        private Dictionary<string, Sound> soundCache = new Dictionary<string, Sound>();
+
         public SoundProvider(ContentManager mgr)
             : base(mgr, "sounds")
         { }
 
         public override Sound Load(string assetName, params object[] args)
         {
-            throw new NotImplementedException();
+            return GetSound(assetName);
+        }
+
+        private Sound GetSound(string sound)
+        {
+            if (!soundCache.ContainsKey(sound))
+                soundCache.Add(sound, new Sound(sound));
+            return soundCache[sound];
         }
     }
 }
