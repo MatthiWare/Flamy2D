@@ -161,7 +161,7 @@ namespace Flamy2D.Base
         {
             Content.RegisterAssetHandler<Texture2D>(typeof(TextureProvider));
             Content.RegisterAssetHandler<Font>(typeof(FontProvider));
-            Content.RegisterAssetHandler<SoundProvider>(typeof(SoundProvider));
+            Content.RegisterAssetHandler<Sound>(typeof(SoundProvider));
         }
 
         private void CalculateTimings()
