@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace Flamy2D.Audio
 {
-    public class AudioDevice : IDisposable
+    public sealed class AudioDevice : IDisposable
     {
         const float DefaultUpdateRate = 10;
         const int DefaultBufferSize = 44100;
@@ -76,18 +76,7 @@ namespace Flamy2D.Audio
             castBuffer = new short[bufferSize];
         }
 
-        public void Dispose()
-        {
-            lock (singletonMutex)
-            {
-                cancelled = true;
-                lock (iterationMutex)
-                    streams.Clear();
-
-                Instance = null;
-                underlyingThread = null;
-            }
-        }
+        
 
         internal bool AddStream(Sound stream)
         {
@@ -216,5 +205,48 @@ namespace Flamy2D.Audio
             }
             while (underlyingThread != null && !cancelled);
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    lock (singletonMutex)
+                    {
+                        cancelled = true;
+                        lock (iterationMutex)
+                            streams.Clear();
+
+                        Instance = null;
+                        underlyingThread = null;
+                    }
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~AudioDevice() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }
