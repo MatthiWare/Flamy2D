@@ -124,7 +124,7 @@ namespace TestProject
 
             int x = (game.Configuration.Width / 2) - (test.Width / 2);
             int y = (game.Configuration.Height / 2) - (test.Height / 2);
-            batch.Draw(test, x, y, Color4.White);
+            //batch.Draw(test, x, y, Color4.White);
         }
     }
 }
