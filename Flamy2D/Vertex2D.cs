@@ -1,9 +1,5 @@
 ﻿using OpenTK;
 using OpenTK.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Flamy2D
 {
@@ -24,6 +20,7 @@ namespace Flamy2D
 
         public Vertex2D(Vector3 pos, Vector2 text, Color4 color)
         {
+            
             Position = pos;
             TextureCoordinate = text;
             Color = color;

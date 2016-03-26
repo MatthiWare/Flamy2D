@@ -24,12 +24,17 @@ namespace Flamy2D.Graphics.Shaders
 
         public abstract void Compile();
 
-        public virtual void Dispose()
+        protected virtual void Dispose(bool disposing)
         {
             if (internalShaderID != -1)
                 GL.DeleteShader(internalShaderID);
 
             internalShaderID = -1;
+        }
+
+        public virtual void Dispose()
+        {
+            Dispose(true);
         }
     }
 }
