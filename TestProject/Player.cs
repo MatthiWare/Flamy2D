@@ -5,6 +5,7 @@ using Flamy2D.Graphics;
 using OpenTK.Graphics;
 using OpenTK.Input;
 using Flamy2D.Fonts;
+using Flamy2D.Audio;
 
 namespace TestProject
 {
@@ -22,6 +23,8 @@ namespace TestProject
         private bool switcher = true;
         private Font font;
         private Text text;
+        private Sound sound;
+        private Texture2D test;
 
         public Player()
         {
@@ -35,6 +38,8 @@ namespace TestProject
                 textures[i] = game.Content.Load<Texture2D>("spr_speler_" + i + ".png", TextureConfiguration.Nearest);
             }
 
+            test = game.Content.Load<Texture2D>("test.png", TextureConfiguration.Nearest);
+
             tex = textures[0];
 
             width = tex.Width;
@@ -45,6 +50,7 @@ namespace TestProject
             drawY = ((float)game.Configuration.Height / 2) - ((float)height / 2);
              font = game.Content.Load<Font>("LVDCC.TTF", 50f);
             text = new Text("Het werkt gg ez!", font, x, y);
+            sound = game.Content.Load<Sound>("3test.ogg");
         }
 
         public override void Update(GameEngine game)
@@ -52,7 +58,12 @@ namespace TestProject
             base.Update(game);
 
             TestGame g = (TestGame) game;
-            
+
+            if (game.Keyboard.IsKeyDown(Key.S))
+            {
+                sound.Play();
+            }
+
             if (game.Keyboard.IsAnyKeyDown(Key.Q, Key.Left))
             {
                 x -= (float)(speed * game.Time.Elapsed);
@@ -110,6 +121,10 @@ namespace TestProject
         {
             batch.Draw(tex, drawX, drawY, Color4.White, scale);
             text.Render(game, batch);
+
+            int x = (game.Configuration.Width / 2) - (test.Width / 2);
+            int y = (game.Configuration.Height / 2) - (test.Height / 2);
+            batch.Draw(test, x, y, Color4.White);
         }
     }
 }

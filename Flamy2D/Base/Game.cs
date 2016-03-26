@@ -13,6 +13,8 @@ using Flamy2D.Fonts;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Reflection;
+using Flamy2D.Audio;
+using OpenTK.Audio;
 
 namespace Flamy2D.Base
 {
@@ -122,6 +124,8 @@ namespace Flamy2D.Base
             this.Log("Setup OpenGL");
             SetupOpenGL();
 
+            this.Log("Setup OpenAL");
+            SetupOpenAL();
             LoadAssetProviders();
 
             Load();
@@ -157,6 +161,7 @@ namespace Flamy2D.Base
         {
             Content.RegisterAssetHandler<Texture2D>(typeof(TextureProvider));
             Content.RegisterAssetHandler<Font>(typeof(FontProvider));
+            Content.RegisterAssetHandler<Sound>(typeof(SoundProvider));
         }
 
         private void CalculateTimings()
@@ -193,6 +198,12 @@ namespace Flamy2D.Base
         {
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+        }
+
+        private void SetupOpenAL()
+        {
+            AudioContext ctx = new AudioContext();
+            AudioDevice.Instance = new AudioDevice();
         }
 
         /// <summary>
@@ -279,26 +290,6 @@ namespace Flamy2D.Base
         {
 
         }
-
-        /// <summary>
-        /// Prepares the Game to load unmanaged libraries from their designated folder 
-        /// ./x64/ or ./x86/
-        /// This allows for an easy implementation of unmanaged libs
-        /// </summary>
-        private static void SetUnmanagedDllDirectory()
-        {
-            string path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            path = Path.Combine(path, IntPtr.Size == 8 ? "win64 " : "win32");
-            if (!SetDllDirectory(path)) throw new System.ComponentModel.Win32Exception();
-        }
-
-        /// <summary>
-        /// Sets the path where the unmanaged libs are located. 
-        /// </summary>
-        /// <param name="path">The unmanaged libs path. </param>
-        /// <returns></returns>
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern bool SetDllDirectory(string path);
 
     }
 }

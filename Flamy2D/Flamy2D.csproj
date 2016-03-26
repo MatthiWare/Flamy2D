@@ -80,6 +80,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NVorbis, Version=0.8.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NVorbis.0.8.4.0\lib\NVorbis.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.1.1.2225.0\lib\net20\OpenTK.dll</HintPath>
       <Private>True</Private>
@@ -103,7 +107,12 @@
     <Compile Include="Assets\ContentManager.cs" />
     <Compile Include="Assets\IAsset.cs" />
     <Compile Include="Assets\Providers\FontProvider.cs" />
+    <Compile Include="Assets\Providers\SoundProvider.cs" />
     <Compile Include="Assets\Providers\TextureProvider.cs" />
+    <Compile Include="Audio\ALException.cs" />
+    <Compile Include="Audio\ALHelper.cs" />
+    <Compile Include="Audio\AudioDevice.cs" />
+    <Compile Include="Audio\Sound.cs" />
     <Compile Include="Buffer\GLBuffer.cs" />
     <Compile Include="Buffer\GLBufferDynamic.cs" />
     <Compile Include="Buffer\GLBufferSettings.cs" />

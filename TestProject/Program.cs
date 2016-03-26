@@ -14,7 +14,7 @@ namespace TestProject
         [STAThread]
         static void Main()
         {
-           SetUnmanagedDllDirectory();
+           //SetUnmanagedDllDirectory();
 
             GameConfiguration config = new GameConfiguration();
             config.FPSTarget = 60;

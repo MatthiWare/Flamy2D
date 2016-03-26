@@ -7,7 +7,7 @@ namespace Flamy2D.Assets.Providers
     public class FontProvider : AssetHandler<Font>
     {
 
-        Dictionary<Tuple<string, float>, Font> cache = new Dictionary<Tuple<string, float>, Font>();
+        private Dictionary<Tuple<string, float>, Font> cache = new Dictionary<Tuple<string, float>, Font>();
 
         public FontProvider(ContentManager mgr)
             : base(mgr, "Fonts")

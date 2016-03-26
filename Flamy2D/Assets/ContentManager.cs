@@ -43,7 +43,7 @@ namespace Flamy2D.Assets
                 return LoadFrom<T>(provider.GetAssetPath(asset), args);
             }
 
-            this.Log("Unspupported {0} asset type!", typeof(T).Name);
+            this.Log("Unsupported asset type ({0}).", typeof(T).Name);
 
             return default(T);
         }
@@ -57,7 +57,7 @@ namespace Flamy2D.Assets
                 return provider.Load(path, args);
             }
 
-            this.Log("Unspupported {0} asset type!", typeof(T).Name);
+            this.Log("Unsupported asset type ({0}).", typeof(T).Name);
 
             return default(T);
         }
@@ -73,7 +73,7 @@ namespace Flamy2D.Assets
                 return;
             }
 
-            this.Log("Unspupported {0} asset type!", typeof(T).Name);
+            this.Log("Unsupported asset type ({0}).", typeof(T).Name);
         }
 
         public void SaveTo<T>(T asset, string assetPath) where T : IAsset
