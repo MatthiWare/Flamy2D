@@ -14,6 +14,7 @@ using System.Runtime.InteropServices;
 using System.IO;
 using System.Reflection;
 using Flamy2D.Audio;
+using OpenTK.Audio;
 
 namespace Flamy2D.Base
 {
@@ -123,6 +124,8 @@ namespace Flamy2D.Base
             this.Log("Setup OpenGL");
             SetupOpenGL();
 
+            this.Log("Setup OpenAL");
+            SetupOpenAL();
             LoadAssetProviders();
 
             Load();
@@ -195,6 +198,12 @@ namespace Flamy2D.Base
         {
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+        }
+
+        private void SetupOpenAL()
+        {
+            AudioContext ctx = new AudioContext();
+            AudioDevice.Instance = new AudioDevice();
         }
 
         /// <summary>
