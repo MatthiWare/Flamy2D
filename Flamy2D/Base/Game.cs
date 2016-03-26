@@ -315,7 +315,8 @@ namespace Flamy2D.Base
                     window.Dispose();
                     batch.Dispose();
                     Keyboard.Dispose();
-
+                    Content.Dispose();
+                    Time.Dispose();
                 }
 
                 
