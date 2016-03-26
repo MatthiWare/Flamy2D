@@ -18,6 +18,7 @@
 - JPG, PNG, BMP, PSD, GIF, HDR, PIC
 
 ##### Audio
+- ogg
 
 ##### Fonts
 - True Type Font Format (ttf)
