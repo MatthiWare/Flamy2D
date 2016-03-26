@@ -8,6 +8,9 @@ namespace Flamy2D.Audio
 {
     internal static class ALHelper
     {
+        internal static readonly XRamExtension XRam = new XRamExtension();
+        internal static readonly EffectsExtension Efx = new EffectsExtension();
+
         internal static void Check()
         {
             ALError error;

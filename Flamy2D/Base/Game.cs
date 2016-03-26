@@ -158,7 +158,7 @@ namespace Flamy2D.Base
         {
             Content.RegisterAssetHandler<Texture2D>(typeof(TextureProvider));
             Content.RegisterAssetHandler<Font>(typeof(FontProvider));
-            Content.RegisterAssetHandler<Sound>(typeof(SoundProvider));
+            Content.RegisterAssetHandler<SoundProvider>(typeof(SoundProvider));
         }
 
         private void CalculateTimings()
@@ -281,26 +281,6 @@ namespace Flamy2D.Base
         {
 
         }
-
-        /// <summary>
-        /// Prepares the Game to load unmanaged libraries from their designated folder 
-        /// ./x64/ or ./x86/
-        /// This allows for an easy implementation of unmanaged libs
-        /// </summary>
-        private static void SetUnmanagedDllDirectory()
-        {
-            string path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            path = Path.Combine(path, IntPtr.Size == 8 ? "win64 " : "win32");
-            if (!SetDllDirectory(path)) throw new System.ComponentModel.Win32Exception();
-        }
-
-        /// <summary>
-        /// Sets the path where the unmanaged libs are located. 
-        /// </summary>
-        /// <param name="path">The unmanaged libs path. </param>
-        /// <returns></returns>
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern bool SetDllDirectory(string path);
 
     }
 }

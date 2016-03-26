@@ -24,6 +24,7 @@ namespace TestProject
         private Font font;
         private Text text;
         private Sound sound;
+        private Texture2D test;
 
         public Player()
         {
@@ -36,6 +37,8 @@ namespace TestProject
             {
                 textures[i] = game.Content.Load<Texture2D>("spr_speler_" + i + ".png", TextureConfiguration.Nearest);
             }
+
+            test = game.Content.Load<Texture2D>("test.png", TextureConfiguration.Nearest);
 
             tex = textures[0];
 
@@ -118,6 +121,10 @@ namespace TestProject
         {
             batch.Draw(tex, drawX, drawY, Color4.White, scale);
             text.Render(game, batch);
+
+            int x = (game.Configuration.Width / 2) - (test.Width / 2);
+            int y = (game.Configuration.Height / 2) - (test.Height / 2);
+            batch.Draw(test, x, y, Color4.White);
         }
     }
 }

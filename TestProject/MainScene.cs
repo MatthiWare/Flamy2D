@@ -25,6 +25,7 @@ namespace TestProject
             f3 = new Fire(700, 400);
         }
 
+
         public override void Update(GameEngine game)
         {
             f.Update(game);
