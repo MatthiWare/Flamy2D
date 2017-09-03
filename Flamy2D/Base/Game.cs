@@ -9,12 +9,12 @@ using Flamy2D.Graphics;
 using Flamy2D.Assets;
 using System;
 using Flamy2D.Assets.Providers;
-using Flamy2D.Fonts;
 using System.Runtime.InteropServices;
 using System.IO;
 using System.Reflection;
 using Flamy2D.Audio;
 using OpenTK.Audio;
+using Flamy2D.Fonts;
 
 namespace Flamy2D.Base
 {
@@ -161,7 +161,7 @@ namespace Flamy2D.Base
         public virtual void LoadAssetProviders()
         {
             Content.RegisterAssetHandler<Texture2D>(typeof(TextureProvider));
-            Content.RegisterAssetHandler<Font>(typeof(FontProvider));
+           Content.RegisterAssetHandler<Font>(typeof(FontProvider));
             Content.RegisterAssetHandler<Sound>(typeof(SoundProvider));
         }
 

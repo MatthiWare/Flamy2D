@@ -16,7 +16,7 @@ namespace Flamy2D
             Scenes = new GameSceneCollection();
         }
 
-        public void SwitchScene(String sceneName)
+        public void SwitchScene(string sceneName)
         {
             if (Scenes.Contains(sceneName))
             {
