@@ -18,32 +18,29 @@ namespace Flamy2D
 
         public void SwitchScene(string sceneName)
         {
-            if (Scenes.Contains(sceneName))
+            if (!Scenes.Contains(sceneName))
             {
-                if (CurrentScene != null)
-                {
-                    if (CurrentScene.Name == sceneName)
-                    {
-                        this.Log("'{0}' scene is already showing", sceneName);
-                    }
-                    else
-                    {
-                        CurrentScene.SceneExited();
-                        CurrentScene = Scenes[sceneName];
-                        CurrentScene.SceneEntered();
-                    }
-                }
-                else
-                {
-                    CurrentScene = Scenes[sceneName];
-                    CurrentScene.SceneEntered();
-                }
+                this.Log($"'{sceneName}' scene doesn't exist");
+                return;
             }
-            else 
+
+            if (CurrentScene == null)
             {
-                this.Log("'{0}' scene doesn't exist", sceneName);
+                CurrentScene = Scenes[sceneName];
+                CurrentScene.SceneEntered();
             }
-            
+            else
+            {
+                if (CurrentScene.Name == sceneName)
+                {
+                    this.Log($"'{sceneName}' scene is already showing");
+                    return;
+                }
+
+                CurrentScene.SceneExited();
+                CurrentScene = Scenes[sceneName];
+                CurrentScene.SceneEntered();
+            }
         }
 
         int updates =0 , renders = 0;

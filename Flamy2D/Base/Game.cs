@@ -1,6 +1,4 @@
-﻿using Flamy2D;
-using Flamy2D.Extensions;
-using OpenTK;
+﻿using OpenTK;
 using OpenTK.Graphics;
 using Flamy2D.Input;
 using System.Threading;
@@ -9,9 +7,6 @@ using Flamy2D.Graphics;
 using Flamy2D.Assets;
 using System;
 using Flamy2D.Assets.Providers;
-using System.Runtime.InteropServices;
-using System.IO;
-using System.Reflection;
 using Flamy2D.Audio;
 using OpenTK.Audio;
 using Flamy2D.Fonts;
@@ -21,7 +16,7 @@ namespace Flamy2D.Base
     /// <summary>
     /// The GameEngine containing all the game logic.
     /// </summary>
-    public class Game : IDisposable, ILog
+    public class Game : IDisposable
     {
 
         public ContentManager Content { get; private set; }
@@ -44,6 +39,38 @@ namespace Flamy2D.Base
         public GameTime Time { get; private set; }
 
         public bool Closing { get; private set; }
+
+        public VSyncMode VSync
+        {
+            get
+            {
+                GraphicsContext.Assert();
+
+                if (context.SwapInterval < 0)
+                    return VSyncMode.Adaptive;
+                else if (context.SwapInterval == 0)
+                    return VSyncMode.Off;
+                else
+                    return VSyncMode.On;
+            }
+            set
+            {
+                GraphicsContext.Assert();
+
+                switch (value)
+                {
+                    case VSyncMode.Adaptive:
+                        context.SwapInterval = -1;
+                        break;
+                    case VSyncMode.On:
+                        context.SwapInterval = 1;
+                        break;
+                    case VSyncMode.Off:
+                        context.SwapInterval = 0;
+                        break;
+                }
+            }
+        }
 
         private NativeWindow window;
         private GraphicsContext context;
@@ -111,11 +138,8 @@ namespace Flamy2D.Base
 
             GraphicsContext.Assert();
 
-            this.Log("Enable VSync: {0}", Configuration.VSync);
-            if (Configuration.VSync)
-                context.SwapInterval = 1;
-            else
-                context.SwapInterval = 0;
+            this.Log($"VSync: {Configuration.VSync}");
+            VSync = Configuration.VSync;
 
             this.Log("Loading OpenGL entry points");
             context.LoadAll();

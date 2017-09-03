@@ -1,5 +1,4 @@
 ﻿using System;
-using SharpFont;
 using Flamy2D.Assets;
 using Flamy2D.Graphics;
 using OpenTK;

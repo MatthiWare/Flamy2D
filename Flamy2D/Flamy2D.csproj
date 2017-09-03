@@ -148,6 +148,7 @@
     <Compile Include="TypeHelper.cs" />
     <Compile Include="TypeSwitch.cs" />
     <Compile Include="Vertex2D.cs" />
+    <Compile Include="VSyncMode.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
