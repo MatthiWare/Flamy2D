@@ -5,7 +5,7 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace TestProject
 {
-    public class TestGame : GameEngine
+    public class TestGame : Game
     {
         public Camera camera;
 

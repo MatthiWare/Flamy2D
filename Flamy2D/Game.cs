@@ -5,12 +5,12 @@ using Flamy2D.Graphics;
 
 namespace Flamy2D
 {
-    public class GameEngine : Game
+    public class Game : BaseGame
     {
         public GameSceneCollection Scenes { get; private set; }
         public GameScene CurrentScene { get; private set; }
 
-        public GameEngine(GameConfiguration config)
+        public Game(GameConfiguration config)
             : base(config)
         {
             Scenes = new GameSceneCollection();
@@ -28,22 +28,21 @@ namespace Flamy2D
             {
                 CurrentScene = Scenes[sceneName];
                 CurrentScene.SceneEntered();
+                return;
             }
-            else
-            {
-                if (CurrentScene.Name == sceneName)
-                {
-                    this.Log($"'{sceneName}' scene is already showing");
-                    return;
-                }
 
-                CurrentScene.SceneExited();
-                CurrentScene = Scenes[sceneName];
-                CurrentScene.SceneEntered();
+            if (CurrentScene.Name == sceneName)
+            {
+                this.Log($"'{sceneName}' scene is already showing");
+                return;
             }
+
+            CurrentScene.SceneExited();
+            CurrentScene = Scenes[sceneName];
+            CurrentScene.SceneEntered();
         }
 
-        int updates =0 , renders = 0;
+        int updates = 0, renders = 0;
         double time = 0;
         protected override void Update()
         {
@@ -58,7 +57,7 @@ namespace Flamy2D
             time += Time.Elapsed;
             if (time > 1f)
             {
-                Console.WriteLine(String.Format("UPS {0}  -- FPS {1}", updates, renders));
+                Console.WriteLine($"UPS: {updates} - FPS: {renders}");
                 updates = 0;
                 renders = 0;
                 time = 0;
@@ -69,12 +68,11 @@ namespace Flamy2D
         {
             renders++;
 
-            if (CurrentScene != null)
-            {
-                batch.Begin();
-                CurrentScene.Render(this, batch);
-                batch.End();
-            }
+            batch.Begin();
+
+            CurrentScene?.Render(this, batch);
+
+            batch.End();
 
             base.Render(batch);
         }

@@ -26,7 +26,7 @@ namespace TestProject
         }
 
 
-        public override void Update(GameEngine game)
+        public override void Update(Game game)
         {
             f.Update(game);
             f2.Update(game);
@@ -35,7 +35,7 @@ namespace TestProject
             p.Update(game);
         }
 
-        public override void Render(GameEngine game, SpriteBatch batch)
+        public override void Render(Game game, SpriteBatch batch)
         {
             f.Render(game, batch);
             f2.Render(game, batch);

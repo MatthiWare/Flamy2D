@@ -121,9 +121,9 @@
     <Compile Include="Fonts\GlyphInfo.cs" />
     <Compile Include="Fonts\RGBA.cs" />
     <Compile Include="GameConfiguration.cs" />
-    <Compile Include="Base\Game.cs" />
+    <Compile Include="Base\BaseGame.cs" />
     <Compile Include="Base\GameTime.cs" />
-    <Compile Include="GameEngine.cs" />
+    <Compile Include="Game.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="Graphics\InterpolationMode.cs" />
     <Compile Include="Graphics\Shaders\BasicShader.cs" />

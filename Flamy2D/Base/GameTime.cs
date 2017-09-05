@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 using System.Diagnostics;
 
 namespace Flamy2D.Base
@@ -15,7 +13,7 @@ namespace Flamy2D.Base
         /// <summary>
         /// The total time the game is running for in MS.
         /// </summary>
-        public double Total { get { return watch.ElapsedMilliseconds * 0.001; } }
+        public double TotalTime { get { return watch.ElapsedMilliseconds * 0.001; } }
 
         /// <summary>
         /// The delta time in MS. 
@@ -46,7 +44,7 @@ namespace Flamy2D.Base
 
         public double Update()
         {
-            double now = Total;
+            double now = TotalTime;
             Elapsed = now - lastUpdated;
             lastUpdated = now;
             return Elapsed;

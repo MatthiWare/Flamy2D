@@ -54,14 +54,14 @@ namespace Flamy2D.Graphics
 
         public float FOV { get; set; }
 
-        private Game game;
+        private BaseGame game;
 
         private int vertexCount;
         private int indexCount;
 
         private bool active;
 
-        public SpriteBatch(Game game, ShaderProgram shader = null)
+        public SpriteBatch(BaseGame game, ShaderProgram shader = null)
         {
             this.game = game;
 
@@ -190,13 +190,13 @@ namespace Flamy2D.Graphics
             float srcW = src.Width;
             float srcH = src.Height;
 
-            Vector2 topLeft = new Vector2(srcX / (float)tex.Width, srcY / (float)tex.Height);
+            Vector2 topLeft = new Vector2(srcX / tex.Width, srcY / tex.Height);
 
-            Vector2 topRight = new Vector2((srcX + srcW) / (float)tex.Width, srcY / (float)tex.Height);
+            Vector2 topRight = new Vector2((srcX + srcW) / tex.Width, srcY / tex.Height);
 
-            Vector2 bottomLeft = new Vector2(srcX / (float)tex.Width, (srcY + srcH) / (float)tex.Height);
+            Vector2 bottomLeft = new Vector2(srcX / tex.Width, (srcY + srcH) / tex.Height);
 
-            Vector2 bottomRight = new Vector2((srcX + srcW) / (float)tex.Width, (srcY + srcH) / (float)tex.Height);
+            Vector2 bottomRight = new Vector2((srcX + srcW) / tex.Width, (srcY + srcH) / tex.Height);
 
             if (effects.HasFlag(SpriteEffects.FlipHorizontal))
             {

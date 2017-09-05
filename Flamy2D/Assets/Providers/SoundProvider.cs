@@ -23,6 +23,7 @@ namespace Flamy2D.Assets.Providers
         {
             if (!soundCache.ContainsKey(sound))
                 soundCache.Add(sound, new Sound(sound));
+
             return soundCache[sound];
         }
     }

@@ -15,9 +15,9 @@ namespace Flamy2D.Scenes
             Name = name;
         }
 
-        public abstract void Update(GameEngine game);
+        public abstract void Update(Game game);
 
-        public abstract void Render(GameEngine game, SpriteBatch batch);
+        public abstract void Render(Game game, SpriteBatch batch);
 
         public virtual void SceneEntered()
         {

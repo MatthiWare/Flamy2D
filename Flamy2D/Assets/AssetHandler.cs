@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 
 namespace Flamy2D.Assets
 {
@@ -23,7 +21,6 @@ namespace Flamy2D.Assets
 
         public abstract T Load(string assetName, params object[] args);
 
-        public virtual void Save(T asset, string path)
-        { }
+        public virtual void Save(T asset, string path) { }
     }
 }

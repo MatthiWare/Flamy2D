@@ -20,6 +20,7 @@ namespace TestProject
             config.FPSTarget = 60;
             config.FixedFPS = true;
             config.Resizable = false;
+            config.VSync = VSyncMode.On;
 
             TestGame game = new TestGame(config);
             game.Run();

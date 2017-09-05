@@ -25,12 +25,12 @@ namespace TestProject
             this.y = y;
         }
 
-        public override void Load(GameEngine game)
+        public override void Load(Game game)
         {
             Console.WriteLine("loaded");
         }
 
-        public override void Update(GameEngine game)
+        public override void Update(Game game)
         {
             base.Update(game);
 
@@ -40,7 +40,7 @@ namespace TestProject
             drawY = y - g.camera.y;
         }
 
-        public override void Render(GameEngine game, SpriteBatch batch)
+        public override void Render(Game game, SpriteBatch batch)
         {
             font.DrawString(batch, text, (int)drawX, (int)drawY, Color4.White);
         }

@@ -1,6 +1,8 @@
-﻿namespace Flamy2D.Assets
+﻿using System;
+
+namespace Flamy2D.Assets
 {
-    public interface IAsset
+    public interface IAsset : IDisposable
     {
     }
 }

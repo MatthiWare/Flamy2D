@@ -27,7 +27,7 @@ namespace TestProject
             this.y = y;
         }
 
-        public override void Load(GameEngine game)
+        public override void Load(Game game)
         {
             
             textures = new Texture2D[3];
@@ -41,7 +41,7 @@ namespace TestProject
             tex = textures[index];
         }
 
-        public override void Update(GameEngine game)
+        public override void Update(Game game)
         {
             base.Update(game);
 
@@ -63,7 +63,7 @@ namespace TestProject
             }
         }
 
-        public override void Render(GameEngine game, SpriteBatch batch)
+        public override void Render(Game game, SpriteBatch batch)
         {
             batch.Draw(tex, drawX, drawY, Color4.White, scale);
         }

@@ -4,116 +4,148 @@ using Flamy2D.Graphics;
 using OpenTK;
 using OpenTK.Graphics;
 using System.Collections.Generic;
+using _Font = System.Drawing.Font;
+using Gfx = System.Drawing.Graphics;
 using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace Flamy2D.Fonts
 {
     public class Font : IAsset, IDisposable
     {
-        private Library library;
+        private _Font font;
 
-        private Face face;
         private int LineHeight;
 
-        readonly Dictionary<uint, GlyphInfo> glyphs = new Dictionary<uint, GlyphInfo>();
+        readonly Dictionary<char, GlyphInfo> glyphs = new Dictionary<char, GlyphInfo>();
 
-        static Font()
+        private Bitmap buffer;
+        private Brush brush;
+
+        public Font(string fontName, float size, FontStyle fs)
         {
-            
+            font = new _Font(fontName, size, fs);
+            buffer = new Bitmap(1920, 1080);
+            brush = new SolidBrush(Color.FromArgb(255, 255, 255, 255));
         }
 
-        public Font(string filename, float size)
+        //private Size MeasureString(string text)
+        //{
+        //    if (text == string.Empty)
+        //        return Size.Empty;
+
+        //    Size size = new Size();
+        //    float top = 0, bottom = 0;
+
+        //    for (int i = 0; i < text.Length; i++)
+        //    {
+        //        char c = text[i];
+
+        //        uint index = face.GetCharIndex(c);
+
+        //        face.LoadGlyph(index, LoadFlags.Default, LoadTarget.Normal);
+
+        //        size.Width += (float)face.Glyph.Advance.X;
+
+        //        if (face.HasKerning && i < text.Length - 1)
+        //        {
+        //            char cc = text[i + 1];
+        //            size.Width += (float)face.GetKerning(index, face.GetCharIndex(cc), KerningMode.Default).X;
+        //        }
+
+        //        float top_ = (float)face.Glyph.Metrics.HorizontalBearingY;
+        //        float bottom_ = (float)(face.Glyph.Metrics.Height - face.Glyph.Metrics.HorizontalBearingY);
+
+        //        if (top_ > top)
+        //            top = top_;
+
+        //        if (bottom_ > bottom)
+        //            bottom = bottom_;
+        //    }
+
+        //    size.Height = top + bottom;
+
+        //    return size;
+        //}
+
+        //private void AddCharacter(uint c)
+        //{
+        //    if (c == (uint)'\t')
+        //    {
+        //        GlyphInfo space = GetGlyph((uint)' ');
+        //        glyphs.Add(c, new GlyphInfo(space.AdvanceX * 5, space.AdvanceY, space.CharIndex));
+        //        return;
+        //    }
+
+        //    uint index = face.GetCharIndex(c);
+        //    if (index == 0)
+        //        throw new Exception("undefined char code");
+
+        //    face.LoadGlyph(index, LoadFlags.Default, LoadTarget.Normal);
+        //    face.Glyph.RenderGlyph(RenderMode.Normal);
+
+        //    if (face.Glyph.Bitmap.Width == 0 && face.Glyph.Bitmap.Rows == 0)
+        //    {
+        //        glyphs.Add(c, new GlyphInfo(
+        //            (int)Math.Ceiling(face.Glyph.Advance.X.ToDecimal()),
+        //            (int)Math.Ceiling(face.Glyph.Advance.Y.ToDecimal()),
+        //            index));
+        //        return;
+        //    }
+
+        //    RGBA[] pixels = new RGBA[face.Glyph.Bitmap.Width * face.Glyph.Bitmap.Rows];
+
+        //    byte[] data = face.Glyph.Bitmap.BufferData;
+        //    for (int i = 0; i < face.Glyph.Bitmap.Width * face.Glyph.Bitmap.Rows; i++)
+        //    {
+        //        pixels[i] = new RGBA(255, 255, 255, data[i]);
+        //    }
+
+        //    Rectangle r = new Rectangle(0, 0, face.Glyph.Bitmap.Width, face.Glyph.Bitmap.Rows);
+        //    Texture2D tex = new Texture2D(TextureConfiguration.Linear, r.Width, r.Height);
+        //    tex.SetData(pixels, r);
+
+        //    GlyphInfo info = new GlyphInfo(tex, r,
+        //        face.Glyph.Advance.X.Ceiling(),
+        //        face.Glyph.Advance.Y.Ceiling(),
+        //        face.Glyph.BitmapLeft, face.Glyph.BitmapTop);
+
+        //    glyphs.Add(c, info);
+        //}
+
+        private void AddCharacter(char c)
         {
-            library = new Library();
-            face = new Face(library, filename);
-
-            face.SetCharSize(Fixed26Dot6.FromSingle(0), Fixed26Dot6.FromSingle(size), 0, 96);
-            LineHeight = face.Size.Metrics.Height.ToInt32();
-        }
-
-        private Size MeasureString(string text)
-        {
-            if (text == "")
-                return new Size();
-
-            Size size = new Size();
-            float top = 0, bottom = 0;
-
-            for (int i = 0; i < text.Length; i++)
+            if (c == '\t')
             {
-                char c = text[i];
+                GlyphInfo space = GetGlyph(' ');
+                glyphs.Add(c, new GlyphInfo(space.AdvanceX + 5, space.AdvanceY));
 
-                uint index = face.GetCharIndex(c);
-
-                face.LoadGlyph(index, LoadFlags.Default, LoadTarget.Normal);
-
-                size.Width += (float)face.Glyph.Advance.X;
-
-                if (face.HasKerning && i < text.Length - 1)
-                {
-                    char cc = text[i + 1];
-                    size.Width += (float)face.GetKerning(index, face.GetCharIndex(cc), KerningMode.Default).X;
-                }
-
-                float top_ = (float)face.Glyph.Metrics.HorizontalBearingY;
-                float bottom_ = (float)(face.Glyph.Metrics.Height - face.Glyph.Metrics.HorizontalBearingY);
-
-                if (top_ > top)
-                    top = top_;
-
-                if (bottom_ > bottom)
-                    bottom = bottom_;
-            }
-
-            size.Height = top + bottom;
-
-            return size;
-        }
-
-        private void AddCharacter(uint c)
-        {
-            if (c == (uint)'\t')
-            {
-                GlyphInfo space = GetGlyph((uint)' ');
-                glyphs.Add(c, new GlyphInfo(space.AdvanceX * 5, space.AdvanceY, space.CharIndex));
                 return;
             }
 
-            uint index = face.GetCharIndex(c);
-            if (index == 0)
-                throw new Exception("undefined char code");
+            Gfx g = Gfx.FromImage(buffer);
+            g.DrawString(c.ToString(), font, brush, 0, 0);
 
-            face.LoadGlyph(index, LoadFlags.Default, LoadTarget.Normal);
-            face.Glyph.RenderGlyph(RenderMode.Normal);
+            SizeF size = g.MeasureString(c.ToString(), font);
 
-            if (face.Glyph.Bitmap.Width == 0 && face.Glyph.Bitmap.Rows == 0)
-            {
-                glyphs.Add(c, new GlyphInfo(
-                    (int)Math.Ceiling(face.Glyph.Advance.X.ToDecimal()),
-                    (int)Math.Ceiling(face.Glyph.Advance.Y.ToDecimal()),
-                    index));
-                return;
-            }
+            Rectangle r = new Rectangle(0, 0, (int)Math.Ceiling(size.Width), (int)Math.Ceiling(size.Height));
 
-            RGBA[] pixels = new RGBA[face.Glyph.Bitmap.Width * face.Glyph.Bitmap.Rows];
+            RGBA[] pixels = new RGBA[r.Width * r.Height];
 
-            byte[] data = face.Glyph.Bitmap.BufferData;
-            for (int i = 0; i < face.Glyph.Bitmap.Width * face.Glyph.Bitmap.Rows; i++)
-            {
-                pixels[i] = new RGBA(255, 255, 255, data[i]);
-            }
+            for (int x = 0; x < r.Width; x++)
+                for (int y = 0; y < r.Height; y++)
+                    pixels[x + y] = new RGBA(255, 255, 255, buffer.GetPixel(x, y).A);
 
-            Rectangle r = new Rectangle(0, 0, face.Glyph.Bitmap.Width, face.Glyph.Bitmap.Rows);
             Texture2D tex = new Texture2D(TextureConfiguration.Linear, r.Width, r.Height);
-            tex.SetData(pixels, r);
+            tex.SetData(pixels, null);
 
-            GlyphInfo info = new GlyphInfo(tex, r,
-                face.Glyph.Advance.X.Ceiling(),
-                face.Glyph.Advance.Y.Ceiling(),
-                face.Glyph.Metrics.HorizontalAdvance.Ceiling(),
-                face.Glyph.BitmapLeft, face.Glyph.BitmapTop, index);
+            GlyphInfo info = new GlyphInfo(tex, r, r.Width, 0, 0, 0);
 
             glyphs.Add(c, info);
+
+            g.Clear(Color.Transparent);
+
+            g.Dispose();
         }
 
         public void DrawString(SpriteBatch batch, string text, Vector2 pos, Color4 color)
@@ -154,29 +186,16 @@ namespace Flamy2D.Fonts
                 {
                     penX += glyph.AdvanceX;
                 }
-
-                
-
-                if (i < text.Length - 1)
-                {
-                    GlyphInfo g2 = GetGlyph(text[i + 1]);
-                    float krn= face.GetKerning(glyph.CharIndex, g2.CharIndex, KerningMode.Default).X.ToSingle();
-                    penX += krn;
-                }
             }
 
         }
 
-        private GlyphInfo GetGlyph(uint cp)
+        private GlyphInfo GetGlyph(char c)
         {
-            if (!glyphs.ContainsKey(cp))
-                AddCharacter(cp);
-            return glyphs[cp];
-        }
+            if (!glyphs.ContainsKey(c))
+                AddCharacter(c);
 
-        private GlyphInfo GetGlyph(char cp)
-        {
-            return GetGlyph((uint)cp);
+            return glyphs[c];
         }
 
         #region IDisposable Support
@@ -188,12 +207,10 @@ namespace Flamy2D.Fonts
             {
                 if (disposing)
                 {
-                    face.Dispose();
-                    library.Dispose();
+                    buffer.Dispose();
+                    font.Dispose();
+                    glyphs.Clear();
                 }
-
-
-                glyphs.Clear();
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // TODO: set large fields to null.
@@ -218,17 +235,5 @@ namespace Flamy2D.Fonts
         }
         #endregion
 
-    }
-
-    class Size
-    {
-        public float Width { get; set; }
-        public float Height { get; set; }
-
-        public Size()
-        {
-            Width = 0;
-            Height = 0;
-        }
     }
 }

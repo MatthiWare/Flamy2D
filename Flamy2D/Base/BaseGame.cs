@@ -14,9 +14,9 @@ using Flamy2D.Fonts;
 namespace Flamy2D.Base
 {
     /// <summary>
-    /// The GameEngine containing all the game logic.
+    /// The Game containing all the game logic.
     /// </summary>
-    public class Game : IDisposable
+    public class BaseGame : IDisposable
     {
 
         public ContentManager Content { get; private set; }
@@ -87,12 +87,12 @@ namespace Flamy2D.Base
         /// Initializes the static game
         /// See <see cref="SetUnmanagedDllDirectory"/> for more information. 
         /// </summary>
-        static Game()
+        static BaseGame()
         {
             //SetUnmanagedDllDirectory();
         }
 
-        public Game(GameConfiguration config)
+        public BaseGame(GameConfiguration config)
         {
             Configuration = config;
             Closing = false;
@@ -111,7 +111,7 @@ namespace Flamy2D.Base
             Initialize();
 
             Thread gameloopThread = new Thread(GameLoop);
-            gameloopThread.Name = "Game Loop Thread";
+            gameloopThread.Name = "BaseGame Loop Thread";
             gameloopThread.Start();
 
             this.Log("Enter message processing loop");
@@ -232,7 +232,7 @@ namespace Flamy2D.Base
         }
 
         /// <summary>
-        /// Pre <see cref="Run"/> Initializes the Game. 
+        /// Pre <see cref="Run"/> Initializes the BaseGame. 
         /// </summary>
         private void Initialize()
         {
@@ -353,7 +353,7 @@ namespace Flamy2D.Base
         }
 
         // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        // ~Game() {
+        // ~BaseGame() {
         //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
         //   Dispose(false);
         // }
