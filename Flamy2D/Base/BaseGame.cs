@@ -75,7 +75,7 @@ namespace Flamy2D.Base
         private NativeWindow window;
         private GraphicsContext context;
         private GraphicsMode graphicsMode;
-        
+
         private bool updating = false;
 
         private SpriteBatch batch;
@@ -98,7 +98,7 @@ namespace Flamy2D.Base
             Closing = false;
 
             Keyboard = new Keyboard();
-             Time = new GameTime();
+            Time = new GameTime();
 
             Content = new ContentManager();
         }
@@ -170,7 +170,7 @@ namespace Flamy2D.Base
                     break;
                 }
 
-                updating = true; 
+                updating = true;
 
                 InternUpdate();
                 Render(batch);
@@ -185,7 +185,7 @@ namespace Flamy2D.Base
         public virtual void LoadAssetProviders()
         {
             Content.RegisterAssetHandler<Texture2D>(typeof(TextureProvider));
-           Content.RegisterAssetHandler<Font>(typeof(FontProvider));
+            Content.RegisterAssetHandler<Font>(typeof(FontProvider));
             Content.RegisterAssetHandler<Sound>(typeof(SoundProvider));
         }
 
@@ -309,6 +309,8 @@ namespace Flamy2D.Base
 
             if (context != null && !context.IsDisposed)
                 context.Update(window.WindowInfo);
+
+            GL.Viewport(0, 0, window.Width, window.Height);
         }
 
         protected virtual void OnExit()
@@ -331,7 +333,7 @@ namespace Flamy2D.Base
 
                     while (updating) ;
                 }
-                
+
 
                 if (disposing)
                 {
@@ -343,7 +345,7 @@ namespace Flamy2D.Base
                     Time.Dispose();
                 }
 
-                
+
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // TODO: set large fields to null.

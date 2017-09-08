@@ -55,7 +55,7 @@ namespace Flamy2D
             base.Update();
 
             time += Time.Elapsed;
-            if (time > 1f)
+            if (time >= 1f)
             {
                 Console.WriteLine($"UPS: {updates} - FPS: {renders}");
                 updates = 0;

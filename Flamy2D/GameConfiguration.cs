@@ -58,7 +58,7 @@ namespace Flamy2D
             Height = 480;
             VSync = VSyncMode.Off;
             FPSTarget = 60;
-            FixedFPS = false;
+            FixedFPS = true;
         }
     }
 }

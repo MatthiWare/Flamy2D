@@ -1,35 +1,20 @@
 ﻿using System;
-using Font = Flamy2D.Fonts.Font;
-using System.Collections.Generic;
+using Flamy2D.Fonts;
+using System.Collections.Concurrent;
 using System.Drawing;
+using System.Threading.Tasks;
 
 namespace Flamy2D.Assets.Providers
 {
-    public class FontProvider : AssetHandler<Font>
+    public class FontProvider : AssetHandler<BitmapFont>
     {
-        private Dictionary<Tuple<string, float, FontStyle>, Font> cache = new Dictionary<Tuple<string, float, FontStyle>, Font>();
+        private ConcurrentDictionary<string, BitmapFont> cache = new ConcurrentDictionary<string, BitmapFont>();
 
         public FontProvider(ContentManager mgr)
             : base(mgr, "Fonts")
         { }
 
-        public override Font Load(string assetName, params object[] args)
-        {
-            float size = args.Length >= 1 ? (float)args[0] : 12f;
-            FontStyle fs = args.Length >= 2 ? (FontStyle)args[1] : FontStyle.Regular;
-
-            return GetFont(assetName, size, fs);
-        }
-
-        private Font GetFont(string name, float size,FontStyle fs)
-        {
-            var f = new Tuple<string, float, FontStyle>(name, size, fs);
-
-            if (!cache.ContainsKey(f))
-                cache.Add(f, new Font(name, size, fs));
-
-            return cache[f];
-        }
+        public override async Task<BitmapFont> Load(string assetName, params object[] args) => cache.GetOrAdd(assetName, await BitmapFontLoader.Load(assetName));
     }
 
    

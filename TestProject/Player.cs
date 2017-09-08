@@ -46,7 +46,7 @@ namespace TestProject
             drawX = ((float)game.Configuration.Width / 2) - ((float)width / 2);
             drawY = ((float)game.Configuration.Height / 2) - ((float)height / 2);
              font = game.Content.Load<Font>("LVDCC.TTF", 50f);
-            text = new Text("Het werkt gg ez!", font, x, y);
+            text = new Text("H", font, x, y);
             //sound = game.Content.Load<Sound>("3test.ogg");
         }
 
@@ -65,6 +65,7 @@ namespace TestProject
             {
                 x -= (float)(speed * game.Time.Elapsed);
                 g.camera.x-= (float)(speed * game.Time.Elapsed);
+
                 if (switcher)
                     tex = textures[4];
                 else
@@ -75,6 +76,7 @@ namespace TestProject
             {
                 x += (float)(speed * game.Time.Elapsed);
                 g.camera.x += (float)(speed * game.Time.Elapsed);
+
                 if (switcher)
                     tex = textures[0];
                 else
@@ -85,6 +87,7 @@ namespace TestProject
             {
                 y -= (float)(speed * game.Time.Elapsed);
                 g.camera.y -= (float)(speed * game.Time.Elapsed);
+
                 if (switcher)
                     tex = textures[2];
                 else
@@ -95,6 +98,7 @@ namespace TestProject
             {
                 y += (float)(speed * game.Time.Elapsed);
                 g.camera.y += (float)(speed * game.Time.Elapsed);
+
                 if (switcher)
                     tex = textures[6];
                 else

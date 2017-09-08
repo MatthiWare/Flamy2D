@@ -117,8 +117,14 @@
     <Compile Include="Buffer\GLBufferDynamic.cs" />
     <Compile Include="Buffer\GLBufferSettings.cs" />
     <Compile Include="Extensions\LogExtensions.cs" />
+    <Compile Include="Fonts\BitmapFont.cs" />
+    <Compile Include="Fonts\BitmapFontLoader.cs" />
+    <Compile Include="Fonts\Character.cs" />
     <Compile Include="Fonts\Font.cs" />
     <Compile Include="Fonts\GlyphInfo.cs" />
+    <Compile Include="Fonts\Kerning.cs" />
+    <Compile Include="Fonts\Padding.cs" />
+    <Compile Include="Fonts\Page.cs" />
     <Compile Include="Fonts\RGBA.cs" />
     <Compile Include="GameConfiguration.cs" />
     <Compile Include="Base\BaseGame.cs" />

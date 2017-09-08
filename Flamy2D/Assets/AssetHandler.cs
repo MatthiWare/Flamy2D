@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 
 namespace Flamy2D.Assets
 {
@@ -19,8 +20,8 @@ namespace Flamy2D.Assets
             return Manager.NormalizePath(Path.Combine(Manager.ContentRoot, AssetRoot, asset));
         }
 
-        public abstract T Load(string assetName, params object[] args);
+        public abstract Task<T> Load(string assetName, params object[] args);
 
-        public virtual void Save(T asset, string path) { }
+        public abstract Task Save(T asset, string path);
     }
 }

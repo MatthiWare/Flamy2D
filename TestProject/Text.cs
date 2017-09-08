@@ -19,8 +19,8 @@ namespace TestProject
 
         public Text(string txt, Font f, float x, float y)
         {
-            this.text = txt;
-            this.font = f;
+            text = txt;
+            font = f;
             this.x = x;
             this.y = y;
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Flamy2D.Assets;
 using Flamy2D.Graphics;
 using OpenTK;
@@ -15,7 +16,7 @@ namespace Flamy2D.Fonts
     {
         private _Font font;
 
-        private int LineHeight;
+        private int LineHeight = 100;
 
         readonly Dictionary<char, GlyphInfo> glyphs = new Dictionary<char, GlyphInfo>();
 
@@ -124,6 +125,9 @@ namespace Flamy2D.Fonts
             }
 
             Gfx g = Gfx.FromImage(buffer);
+            g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             g.DrawString(c.ToString(), font, brush, 0, 0);
 
             SizeF size = g.MeasureString(c.ToString(), font);
@@ -132,9 +136,14 @@ namespace Flamy2D.Fonts
 
             RGBA[] pixels = new RGBA[r.Width * r.Height];
 
+            int q = 0;
             for (int x = 0; x < r.Width; x++)
                 for (int y = 0; y < r.Height; y++)
-                    pixels[x + y] = new RGBA(255, 255, 255, buffer.GetPixel(x, y).A);
+                {
+                    var color = buffer.GetPixel(x, y);
+                    pixels[q++] = new RGBA(255, 255, 255, color.A);
+                }
+
 
             Texture2D tex = new Texture2D(TextureConfiguration.Linear, r.Width, r.Height);
             tex.SetData(pixels, null);
