@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Flamy2D.Assets
 {
@@ -32,7 +33,7 @@ namespace Flamy2D.Assets
             AssetHandlers[typeof(T)] = Activator.CreateInstance(type, new object[] { this });
         }
 
-        public T Load<T>(string asset, params object[] args) where T : IAsset
+        public async Task<T> LoadAsync<T>(string asset, params object[] args) where T : IAsset
         {
             if (!AssetHandlers.ContainsKey(typeof(T)))
             {
@@ -43,10 +44,10 @@ namespace Flamy2D.Assets
 
             AssetHandler<T> provider = (AssetHandler<T>)AssetHandlers[typeof(T)];
 
-            return LoadFrom<T>(provider.GetAssetPath(asset), args);
+            return await LoadFromAsync<T>(provider.GetAssetPath(asset), args);
         }
 
-        public T LoadFrom<T>(string path, params object[] args) where T :IAsset
+        public async Task<T> LoadFromAsync<T>(string path, params object[] args) where T : IAsset
         {
             if (!AssetHandlers.ContainsKey(typeof(T)))
             {
@@ -57,10 +58,10 @@ namespace Flamy2D.Assets
 
             AssetHandler<T> provider = (AssetHandler<T>)AssetHandlers[typeof(T)];
 
-            return provider.Load(path, args);
+            return await provider.Load(path, args);
         }
 
-        public void Save<T>(T asset, string assetPath)where T :IAsset
+        public async Task SaveAsync<T>(T asset, string assetPath) where T : IAsset
         {
             if (!AssetHandlers.ContainsKey(typeof(T)))
             {
@@ -70,10 +71,10 @@ namespace Flamy2D.Assets
             }
 
             AssetHandler<T> provider = (AssetHandler<T>)AssetHandlers[typeof(T)];
-            SaveTo<T>(asset, provider.GetAssetPath(assetPath));
+            await SaveToAsync<T>(asset, provider.GetAssetPath(assetPath));
         }
 
-        public void SaveTo<T>(T asset, string assetPath) where T : IAsset
+        public async Task SaveToAsync<T>(T asset, string assetPath) where T : IAsset
         {
             if (!AssetHandlers.ContainsKey(typeof(T)))
             {
@@ -83,7 +84,7 @@ namespace Flamy2D.Assets
             }
 
             AssetHandler<T> provider = (AssetHandler<T>)AssetHandlers[typeof(T)];
-            provider.Save(asset, assetPath);
+            await provider.Save(asset, assetPath);
         }
 
         #region IDisposable Support
@@ -95,7 +96,7 @@ namespace Flamy2D.Assets
             {
                 if (disposing)
                 {
-                    
+
                 }
 
                 AssetHandlers.Clear();

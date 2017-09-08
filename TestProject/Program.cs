@@ -16,11 +16,7 @@ namespace TestProject
         static void Main()
         {
            //SetUnmanagedDllDirectory();
-
-            string test = "info face=\"LVDC Common2\" size=32 bold=0 italic=0 charset=\"\" unicode=1 stretchH=100 smooth=1 aa=4 padding=0,0,0,0 spacing=1,1 outline=0";
-            foreach (string x in BitmapFontLoader.Split(test, ' '))
-                Console.WriteLine(x);
-
+           
            
 
             GameConfiguration config = new GameConfiguration();
@@ -30,7 +26,7 @@ namespace TestProject
             config.VSync = VSyncMode.Off;
 
             TestGame game = new TestGame(config);
-            //game.Run();
+            game.Run();
         }
 
         public static void SetUnmanagedDllDirectory()

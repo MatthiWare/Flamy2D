@@ -1,30 +1,28 @@
 ﻿using Flamy2D.Audio;
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Flamy2D.Assets.Providers
 {
     public class SoundProvider : AssetHandler<Sound>
     {
-        private Dictionary<string, Sound> soundCache = new Dictionary<string, Sound>();
+        private ConcurrentDictionary<string, Sound> soundCache = new ConcurrentDictionary<string, Sound>();
 
         public SoundProvider(ContentManager mgr)
             : base(mgr, "sounds")
         { }
 
-        public override Sound Load(string assetName, params object[] args)
+        public async override Task<Sound> Load(string assetName, params object[] args)
         {
-            return GetSound(assetName);
+            return await Task.FromResult(soundCache.GetOrAdd(assetName, new Sound(assetName)));
         }
 
-        private Sound GetSound(string sound)
+        public override Task Save(Sound asset, string path)
         {
-            if (!soundCache.ContainsKey(sound))
-                soundCache.Add(sound, new Sound(sound));
-
-            return soundCache[sound];
+            throw new NotImplementedException();
         }
     }
 }

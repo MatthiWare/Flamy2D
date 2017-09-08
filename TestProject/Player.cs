@@ -27,14 +27,14 @@ namespace TestProject
 
         public Player()
         {
-            textures=new Texture2D[8];
+            textures = new Texture2D[8];
         }
 
         public override void Load(Game game)
         {
             for (int i = 0; i < textures.Length; i++)
             {
-                textures[i] = game.Content.Load<Texture2D>("spr_speler_" + i + ".png", TextureConfiguration.Nearest);
+                textures[i] = game.Content.LoadAsync<Texture2D>("spr_speler_" + i + ".png", TextureConfiguration.Nearest).Result;
             }
 
             tex = textures[0];
@@ -45,7 +45,7 @@ namespace TestProject
             y = ((float)game.Configuration.Height / 2) - ((float)height / 2);
             drawX = ((float)game.Configuration.Width / 2) - ((float)width / 2);
             drawY = ((float)game.Configuration.Height / 2) - ((float)height / 2);
-             font = game.Content.Load<Font>("LVDCC.TTF", 50f);
+            font = game.Content.LoadAsync<Font>("LVDCC.TTF", 50f).Result;
             text = new Text("H", font, x, y);
             //sound = game.Content.Load<Sound>("3test.ogg");
         }
@@ -54,7 +54,7 @@ namespace TestProject
         {
             base.Update(game);
 
-            TestGame g = (TestGame) game;
+            TestGame g = (TestGame)game;
 
             if (game.Keyboard.IsKeyDown(Key.S))
             {
@@ -64,7 +64,7 @@ namespace TestProject
             if (game.Keyboard.IsAnyKeyDown(Key.Q, Key.Left))
             {
                 x -= (float)(speed * game.Time.Elapsed);
-                g.camera.x-= (float)(speed * game.Time.Elapsed);
+                g.camera.x -= (float)(speed * game.Time.Elapsed);
 
                 if (switcher)
                     tex = textures[4];
@@ -116,7 +116,7 @@ namespace TestProject
             text.Update(g);
         }
 
-        
+
 
         public override void Render(Game game, SpriteBatch batch)
         {

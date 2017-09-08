@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Flamy2D.Assets;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Flamy2D.Fonts
 {
-    public class BitmapFont : IEnumerable<Character>
+    public class BitmapFont : IEnumerable<Character>, IAsset
     {
         #region Properties
 
@@ -138,6 +139,10 @@ namespace Flamy2D.Fonts
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

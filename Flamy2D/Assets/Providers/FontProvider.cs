@@ -15,6 +15,11 @@ namespace Flamy2D.Assets.Providers
         { }
 
         public override async Task<BitmapFont> Load(string assetName, params object[] args) => cache.GetOrAdd(assetName, await BitmapFontLoader.Load(assetName));
+
+        public override Task Save(BitmapFont asset, string path)
+        {
+            throw new NotImplementedException();
+        }
     }
 
    
