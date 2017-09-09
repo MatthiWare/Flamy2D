@@ -2,6 +2,7 @@
 using Flamy2D.Imaging;
 using OpenTK.Graphics.OpenGL4;
 using System;
+using System.Threading.Tasks;
 using System.Drawing;
 using System.IO;
 
@@ -25,7 +26,7 @@ namespace Flamy2D.Graphics
             TextureId = GL.GenTexture();
 
             // Bind the texture
-            Bind();
+            Bind(() =>
             {
                 // Choose the filters
                 TextureMinFilter minFilter = TextureMinFilter.Linear;
@@ -63,32 +64,31 @@ namespace Flamy2D.Graphics
 
                 if (config.Mipmap)
                     GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
-            }
-            Unbind();
+            });
         }
 
-        public static Texture2D LoadFromFile(string path, TextureConfiguration config)
+        public static async Task<Texture2D> LoadFromFileAsync(string path, TextureConfiguration config)
         {
             if (!File.Exists(path))
                 throw new FileNotFoundException("File doesn't exist", path);
 
-            Texture2D tex;
+            return await Task.Run(() =>
+            {
+                int w = -1, h = -1, n = -1;
+                IntPtr data = ImageLib.Load(path, ref w, ref h, ref n, 4);
+                Texture2D tex = new Texture2D(config, w, h);
+                tex.SetData(data, null);
+                ImageLib.Free(data);
 
-            // Load the Image
-            int w = -1, h = -1, n = -1;
-            IntPtr data = ImageLib.Load(path, ref w, ref h, ref n, 4);
-            tex = new Texture2D(config, w, h);
-            tex.SetData(data, null);
-            ImageLib.Free(data);
-            
-            return tex;
+                return tex;
+            });
         }
 
         public void SetData(IntPtr data, Rectangle? rect, PixelFormat format = PixelFormat.Rgba, PixelType type = PixelType.UnsignedByte)
         {
             Rectangle r = rect ?? Bounds;
 
-            Bind();
+            Bind(() =>
             {
                 GL.TexSubImage2D(
                     target: TextureTarget.Texture2D,
@@ -101,15 +101,14 @@ namespace Flamy2D.Graphics
                     type: type,
                     pixels: data
                 );
-            }
-            Unbind();
+            });
         }
 
         public void SetData<T>(T[] data, Rectangle? rect, PixelFormat format = PixelFormat.Rgba, PixelType type = PixelType.UnsignedByte) where T : struct
         {
             Rectangle r = rect ?? Bounds;
 
-            Bind();
+            Bind(() =>
             {
                 GL.TexSubImage2D(
                     target: TextureTarget.Texture2D,
@@ -122,8 +121,7 @@ namespace Flamy2D.Graphics
                     type: type,
                     pixels: data
                 );
-            }
-            Unbind();
+            });
         }
 
         public void Unbind(TextureUnit unit)
@@ -146,6 +144,13 @@ namespace Flamy2D.Graphics
         public void Bind()
         {
             Bind(TextureUnit.Texture0);
+        }
+
+        public void Bind(Action action)
+        {
+            Bind();
+            action();
+            Unbind();
         }
 
         #region IDisposable Support

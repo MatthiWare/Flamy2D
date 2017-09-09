@@ -1,4 +1,7 @@
 ﻿using Flamy2D.Assets;
+using Flamy2D.Graphics;
+using OpenTK;
+using OpenTK.Graphics;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Flamy2D.Fonts
 {
-    public class BitmapFont : IEnumerable<Character>, IAsset
+    public class BitmapFont : IEnumerable<Character>, IAsset, IDisposable
     {
         #region Properties
 
@@ -58,6 +61,8 @@ namespace Flamy2D.Fonts
         public Size TextureSize { get; set; }
 
         public Character this[char character] => Characters[character];
+
+        public IDictionary<int, Texture2D> Textures { get; set; }
 
         public bool Unicode { get; set; }
 
@@ -129,10 +134,19 @@ namespace Flamy2D.Fonts
 
         public string NormalizeLineBreaks(string s) => s.Replace("\r\n", "\n").Replace("\r", "\n");
 
+        public void DrawString(SpriteBatch batch, string text, Vector2 pos, Color4 color)
+        {
+            DrawString(batch, text, (int)pos.X, (int)pos.Y, color);
+        }
+
+        public void DrawString(SpriteBatch batch, string text, int x, int y, Color4 color)
+        {
+
+        }
 
         public IEnumerator<Character> GetEnumerator()
         {
-            foreach (KeyValuePair<char, Character> kvp in Characters)
+            foreach (var kvp in Characters)
                 yield return kvp.Value;
         }
 
@@ -141,8 +155,45 @@ namespace Flamy2D.Fonts
             return GetEnumerator();
         }
 
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    Characters = null;
+                    Kernings = null;
+
+                    foreach (var pair in Textures)
+                        pair.Value.Dispose();
+
+                    Textures = null;
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~BitmapFont() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
         }
+        #endregion
     }
 }

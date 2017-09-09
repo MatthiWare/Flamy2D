@@ -25,8 +25,7 @@ namespace Flamy2D.Assets.Providers
 
         private async Task<Texture2D> GetOrAdd(string name, TextureConfiguration config)
         {
-            var text = cache.GetOrAdd(name, Texture2D.LoadFromFile(name, config));
-            return await Task.FromResult(text);
+            return cache.GetOrAdd(name, await Texture2D.LoadFromFileAsync(name, config));
         }
     }
 }

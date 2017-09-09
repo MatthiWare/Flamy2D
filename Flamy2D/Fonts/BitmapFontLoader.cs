@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Flamy2D.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -61,6 +62,9 @@ namespace Flamy2D.Fonts
             }
 
             font.Pages = pageData.Select(kvp => kvp.Value).ToArray();
+
+            foreach(Page page in font.Pages)
+                font.Textures.Add(page.Id, await Texture2D.LoadFromFileAsync(page.FileName, TextureConfiguration.Linear));
 
             return font;
         }

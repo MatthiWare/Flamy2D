@@ -8,6 +8,8 @@ namespace Flamy2D.Imaging
         [DllImport("stb_image.dll")]
         private static extern IntPtr stbi_load(string filename, ref int x, ref int y, ref int n, int req_comp);
 
+
+
         [DllImport("stb_image.dll")]
         private static extern void stbi_image_free(IntPtr data);
 
