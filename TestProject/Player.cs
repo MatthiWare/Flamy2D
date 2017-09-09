@@ -21,7 +21,7 @@ namespace TestProject
         private double c = 0;
         private float changer = 0.35f;
         private bool switcher = true;
-        private Font font;
+        private BitmapFont font;
         private Text text;
         private Sound sound;
 
@@ -45,7 +45,7 @@ namespace TestProject
             y = ((float)game.Configuration.Height / 2) - ((float)height / 2);
             drawX = ((float)game.Configuration.Width / 2) - ((float)width / 2);
             drawY = ((float)game.Configuration.Height / 2) - ((float)height / 2);
-            font = game.Content.LoadAsync<Font>("LVDCC.TTF", 50f).Result;
+            font = game.Content.LoadAsync<BitmapFont>("LVDCC.TTF.fnt").Result;
             text = new Text("H", font, x, y);
             //sound = game.Content.Load<Sound>("3test.ogg");
         }

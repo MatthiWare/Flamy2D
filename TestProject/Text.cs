@@ -15,9 +15,9 @@ namespace TestProject
 
         private float x, y, drawX, drawY;
         private string text;
-        private Font font;
+        private BitmapFont font;
 
-        public Text(string txt, Font f, float x, float y)
+        public Text(string txt, BitmapFont f, float x, float y)
         {
             text = txt;
             font = f;

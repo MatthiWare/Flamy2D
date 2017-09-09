@@ -34,7 +34,7 @@ namespace TestProject
 
         protected override void Render(SpriteBatch batch)
         {
-            GL.Clear(ClearBufferMask.ColorBufferBit);
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             base.Render(batch);
         }
 

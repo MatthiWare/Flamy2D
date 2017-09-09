@@ -31,6 +31,9 @@ namespace Flamy2D.Fonts
                     var line = await sr.ReadLineAsync();
                     var tokens = Split(line, ' ');
 
+                    if (tokens.Length < 1)
+                        continue;
+
                     switch (tokens[0])
                     {
                         case "info":
@@ -63,7 +66,7 @@ namespace Flamy2D.Fonts
 
             font.Pages = pageData.Select(kvp => kvp.Value).ToArray();
 
-            foreach(Page page in font.Pages)
+            foreach (Page page in font.Pages)
                 font.Textures.Add(page.Id, await Texture2D.LoadFromFileAsync(page.FileName, TextureConfiguration.Linear));
 
             return font;
@@ -126,11 +129,11 @@ namespace Flamy2D.Fonts
             font.OutlineSize = GetNamedInt("outline", tokens);
         }
 
-        private static char GetNamedChar(string name, string[] tokens) => char.Parse(GetNamedString(name, tokens));
+        private static char GetNamedChar(string name, string[] tokens) => (char)GetNamedInt(name, tokens);
 
         private static int GetNamedInt(string name, string[] tokens) => int.Parse(GetNamedString(name, tokens));
 
-        private static bool GetNamedBool(string name, string[] tokens) => int.Parse(GetNamedString(name, tokens)) != 0;
+        private static bool GetNamedBool(string name, string[] tokens) => GetNamedInt(name, tokens) != 0;
 
         private static string GetNamedString(string name, string[] tokens)
         {
@@ -185,10 +188,12 @@ namespace Flamy2D.Fonts
             for (int i = 0; i < input.Length; i++)
             {
                 char data = input[i];
+                var end = i == input.Length - 1;
 
-                if (data == splitter && !isInQuote)
+                if ((data == splitter && !isInQuote) || end)
                 {
                     var length = i - begin;
+                    if (end) length++;
 
                     if (length > 0)
                         items.Add(input.Substring(begin, length).Replace($"{quote}", string.Empty));

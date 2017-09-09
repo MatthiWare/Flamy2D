@@ -141,7 +141,39 @@ namespace Flamy2D.Fonts
 
         public void DrawString(SpriteBatch batch, string text, int x, int y, Color4 color)
         {
+            var normalized = NormalizeLineBreaks(text);
+            var previousCharacter = ' ';
+            var size = MeasureFont(normalized);
 
+            if (size.Height == 0 || size.Width == 0)
+                return;
+
+            foreach (var c in normalized)
+            {
+                if (c == '\n')
+                {
+                    x = 0;
+                    y += LineHeight;
+                    continue;
+                }
+                else
+                {
+                    var data = this[c];
+                    var kern = GetKerning(previousCharacter, c);
+
+                    DrawCharacter(batch, data, x + data.Offset.X + kern, y + data.Offset.Y, color);
+
+                    x += data.XAdvance + kern;
+                }
+
+                previousCharacter = c;
+            }
+        }
+
+        private void DrawCharacter(SpriteBatch batch, Character c, int x, int y, Color4 color)
+        {
+            var src = new Rectangle(x, y, c.Bounds.Width, c.Bounds.Height);
+            batch.Draw(Textures[c.TexturePage], src, c.Bounds, color);
         }
 
         public IEnumerator<Character> GetEnumerator()

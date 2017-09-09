@@ -185,7 +185,7 @@ namespace Flamy2D.Base
         public virtual void LoadAssetProviders()
         {
             Content.RegisterAssetHandler<Texture2D>(typeof(TextureProvider));
-            Content.RegisterAssetHandler<Font>(typeof(FontProvider));
+            Content.RegisterAssetHandler<BitmapFont>(typeof(FontProvider));
             Content.RegisterAssetHandler<Sound>(typeof(SoundProvider));
         }
 
