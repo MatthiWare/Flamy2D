@@ -68,7 +68,7 @@ namespace Flamy2D.Graphics
             Unbind();
         }
 
-        public static async Task<Texture2D> LoadFromFileAsync(string path, TextureConfiguration config)
+        public static Texture2D LoadFromFileAsync(string path, TextureConfiguration config)
         {
             if (!File.Exists(path))
                 throw new FileNotFoundException("File doesn't exist", path);
@@ -79,7 +79,7 @@ namespace Flamy2D.Graphics
             tex.SetData(data, null);
             ImageLib.Free(data);
 
-            return await Task.FromResult(tex).ConfigureAwait(false);
+            return tex;
         }
 
         public void SetData(IntPtr data, Rectangle? rect, PixelFormat format = PixelFormat.Rgba, PixelType type = PixelType.UnsignedByte)

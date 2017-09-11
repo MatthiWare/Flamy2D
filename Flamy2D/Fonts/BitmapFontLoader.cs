@@ -11,7 +11,7 @@ namespace Flamy2D.Fonts
 {
     public static class BitmapFontLoader
     {
-        public async static Task<BitmapFont> Load(string fileName)
+        public static BitmapFont Load(string fileName)
         {
             if (string.IsNullOrEmpty(fileName)) throw new ArgumentNullException(nameof(fileName));
             if (!File.Exists(fileName)) throw new FileNotFoundException($"Unable to find bitmap font file at {fileName}", fileName);
@@ -23,12 +23,13 @@ namespace Flamy2D.Fonts
 
             font.Kernings = new Dictionary<Kerning, int>();
             font.Characters = new Dictionary<char, Character>();
+            font.Textures = new Dictionary<int, Texture2D>();
 
             using (StreamReader sr = new StreamReader(File.OpenRead(fileName)))
             {
                 while (!sr.EndOfStream)
                 {
-                    var line = await sr.ReadLineAsync();
+                    var line = sr.ReadLine();
                     var tokens = Split(line, ' ');
 
                     if (tokens.Length < 1)
@@ -67,7 +68,7 @@ namespace Flamy2D.Fonts
             font.Pages = pageData.Select(kvp => kvp.Value).ToArray();
 
             foreach (Page page in font.Pages)
-                font.Textures.Add(page.Id, await Texture2D.LoadFromFileAsync(page.FileName, TextureConfiguration.Linear));
+                font.Textures.Add(page.Id, Texture2D.LoadFromFileAsync(page.FileName, TextureConfiguration.Linear));
 
             return font;
         }

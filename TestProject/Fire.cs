@@ -35,7 +35,7 @@ namespace TestProject
 
             for (int i = 0; i < textures.Length; i++)
             {
-                textures[i] = game.Content.LoadAsync<Texture2D>("fire" + i + ".png", TextureConfiguration.Nearest).Result;
+                textures[i] = game.Content.LoadAsync<Texture2D>("fire" + i + ".png", TextureConfiguration.Nearest);
             }
 
             tex = textures[index];

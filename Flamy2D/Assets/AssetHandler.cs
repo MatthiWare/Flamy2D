@@ -20,8 +20,8 @@ namespace Flamy2D.Assets
             return Manager.NormalizePath(Path.Combine(Manager.ContentRoot, AssetRoot, asset));
         }
 
-        public abstract Task<T> Load(string assetName, params object[] args);
+        public abstract T Load(string assetName, params object[] args);
 
-        public abstract Task Save(T asset, string path);
+        public abstract void Save(T asset, string path);
     }
 }

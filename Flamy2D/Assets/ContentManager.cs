@@ -33,7 +33,7 @@ namespace Flamy2D.Assets
             AssetHandlers[typeof(T)] = Activator.CreateInstance(type, new object[] { this });
         }
 
-        public async Task<T> LoadAsync<T>(string asset, params object[] args) where T : IAsset
+        public T LoadAsync<T>(string asset, params object[] args) where T : IAsset
         {
             if (!AssetHandlers.ContainsKey(typeof(T)))
             {
@@ -44,10 +44,10 @@ namespace Flamy2D.Assets
 
             AssetHandler<T> provider = (AssetHandler<T>)AssetHandlers[typeof(T)];
 
-            return await LoadFromAsync<T>(provider.GetAssetPath(asset), args);
+            return LoadFromAsync<T>(provider.GetAssetPath(asset), args);
         }
 
-        public async Task<T> LoadFromAsync<T>(string path, params object[] args) where T : IAsset
+        public T LoadFromAsync<T>(string path, params object[] args) where T : IAsset
         {
             if (!AssetHandlers.ContainsKey(typeof(T)))
             {
@@ -58,10 +58,10 @@ namespace Flamy2D.Assets
 
             AssetHandler<T> provider = (AssetHandler<T>)AssetHandlers[typeof(T)];
 
-            return await provider.Load(path, args);
+            return provider.Load(path, args);
         }
 
-        public async Task SaveAsync<T>(T asset, string assetPath) where T : IAsset
+        public void SaveAsync<T>(T asset, string assetPath) where T : IAsset
         {
             if (!AssetHandlers.ContainsKey(typeof(T)))
             {
@@ -71,10 +71,10 @@ namespace Flamy2D.Assets
             }
 
             AssetHandler<T> provider = (AssetHandler<T>)AssetHandlers[typeof(T)];
-            await SaveToAsync<T>(asset, provider.GetAssetPath(assetPath));
+            SaveToAsync<T>(asset, provider.GetAssetPath(assetPath));
         }
 
-        public async Task SaveToAsync<T>(T asset, string assetPath) where T : IAsset
+        public void SaveToAsync<T>(T asset, string assetPath) where T : IAsset
         {
             if (!AssetHandlers.ContainsKey(typeof(T)))
             {
@@ -84,7 +84,7 @@ namespace Flamy2D.Assets
             }
 
             AssetHandler<T> provider = (AssetHandler<T>)AssetHandlers[typeof(T)];
-            await provider.Save(asset, assetPath);
+            provider.Save(asset, assetPath);
         }
 
         #region IDisposable Support

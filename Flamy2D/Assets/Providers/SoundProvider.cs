@@ -15,12 +15,12 @@ namespace Flamy2D.Assets.Providers
             : base(mgr, "sounds")
         { }
 
-        public async override Task<Sound> Load(string assetName, params object[] args)
+        public override Sound Load(string assetName, params object[] args)
         {
-            return await Task.FromResult(soundCache.GetOrAdd(assetName, new Sound(assetName)));
+            return soundCache.GetOrAdd(assetName, new Sound(assetName));
         }
 
-        public override Task Save(Sound asset, string path)
+        public override void Save(Sound asset, string path)
         {
             throw new NotImplementedException();
         }

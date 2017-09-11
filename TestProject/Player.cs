@@ -34,7 +34,7 @@ namespace TestProject
         {
             for (int i = 0; i < textures.Length; i++)
             {
-                textures[i] = game.Content.LoadAsync<Texture2D>("spr_speler_" + i + ".png", TextureConfiguration.Nearest).Result;
+                textures[i] = game.Content.LoadAsync<Texture2D>("spr_speler_" + i + ".png", TextureConfiguration.Nearest);
             }
 
             tex = textures[0];
@@ -45,8 +45,8 @@ namespace TestProject
             y = ((float)game.Configuration.Height / 2) - ((float)height / 2);
             drawX = ((float)game.Configuration.Width / 2) - ((float)width / 2);
             drawY = ((float)game.Configuration.Height / 2) - ((float)height / 2);
-            font = game.Content.LoadAsync<BitmapFont>("LVDCC.TTF.fnt").Result;
-            text = new Text("H", font, x, y);
+            font = game.Content.LoadAsync<BitmapFont>("LVDCC.TTF.fnt");
+            text = new Text("Hello world", font, x, y);
             //sound = game.Content.Load<Sound>("3test.ogg");
         }
 

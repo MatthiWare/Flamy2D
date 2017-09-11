@@ -13,19 +13,19 @@ namespace Flamy2D.Assets.Providers
             : base(mgr, "Textures")
         { }
 
-        public async override Task<Texture2D> Load(string assetName, params object[] args)
+        public override Texture2D Load(string assetName, params object[] args)
         {
-            return await GetOrAdd(assetName, args.Length < 1 ? TextureConfiguration.Nearest : (TextureConfiguration)args[0]);
+            return GetOrAdd(assetName, args.Length < 1 ? TextureConfiguration.Nearest : (TextureConfiguration)args[0]);
         }
 
-        public override Task Save(Texture2D asset, string path)
+        public override void Save(Texture2D asset, string path)
         {
             throw new NotImplementedException();
         }
 
-        private async Task<Texture2D> GetOrAdd(string name, TextureConfiguration config)
+        private Texture2D GetOrAdd(string name, TextureConfiguration config)
         {
-            return cache.GetOrAdd(name, await Texture2D.LoadFromFileAsync(name, config));
+            return cache.GetOrAdd(name, Texture2D.LoadFromFileAsync(name, config));
         }
     }
 }
