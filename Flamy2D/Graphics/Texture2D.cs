@@ -2,6 +2,7 @@
 using Flamy2D.Imaging;
 using OpenTK.Graphics.OpenGL4;
 using System;
+using System.Threading.Tasks;
 using System.Drawing;
 using System.IO;
 
@@ -67,20 +68,17 @@ namespace Flamy2D.Graphics
             Unbind();
         }
 
-        public static Texture2D LoadFromFile(string path, TextureConfiguration config)
+        public static Texture2D LoadFromFileAsync(string path, TextureConfiguration config)
         {
             if (!File.Exists(path))
                 throw new FileNotFoundException("File doesn't exist", path);
 
-            Texture2D tex;
-
-            // Load the Image
             int w = -1, h = -1, n = -1;
             IntPtr data = ImageLib.Load(path, ref w, ref h, ref n, 4);
-            tex = new Texture2D(config, w, h);
+            Texture2D tex = new Texture2D(config, w, h);
             tex.SetData(data, null);
             ImageLib.Free(data);
-            
+
             return tex;
         }
 
@@ -146,6 +144,13 @@ namespace Flamy2D.Graphics
         public void Bind()
         {
             Bind(TextureUnit.Texture0);
+        }
+
+        public void Bind(Action action)
+        {
+            Bind();
+            action();
+            Unbind();
         }
 
         #region IDisposable Support

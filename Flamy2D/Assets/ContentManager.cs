@@ -1,13 +1,12 @@
-﻿using Flamy2D.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace Flamy2D.Assets
 {
-    public class ContentManager : ILog, IDisposable
+    public class ContentManager : IDisposable
     {
-
         private string contentRoot;
 
         public string ContentRoot
@@ -34,55 +33,58 @@ namespace Flamy2D.Assets
             AssetHandlers[typeof(T)] = Activator.CreateInstance(type, new object[] { this });
         }
 
-        public T Load<T>(string asset, params object[] args) where T : IAsset
+        public T LoadAsync<T>(string asset, params object[] args) where T : IAsset
         {
-            if (AssetHandlers.ContainsKey(typeof(T)))
+            if (!AssetHandlers.ContainsKey(typeof(T)))
             {
-                AssetHandler<T> provider = (AssetHandler<T>)AssetHandlers[typeof(T)];
+                this.Log($"Unsupported asset type ({typeof(T).Name}).");
 
-                return LoadFrom<T>(provider.GetAssetPath(asset), args);
+                return default(T);
             }
 
-            this.Log("Unsupported asset type ({0}).", typeof(T).Name);
+            AssetHandler<T> provider = (AssetHandler<T>)AssetHandlers[typeof(T)];
 
-            return default(T);
+            return LoadFromAsync<T>(provider.GetAssetPath(asset), args);
         }
 
-        public T LoadFrom<T>(string path, params object[] args) where T :IAsset
+        public T LoadFromAsync<T>(string path, params object[] args) where T : IAsset
         {
-            if (AssetHandlers.ContainsKey(typeof(T)))
+            if (!AssetHandlers.ContainsKey(typeof(T)))
             {
-                AssetHandler<T> provider = (AssetHandler<T>)AssetHandlers[typeof(T)];
+                this.Log($"Unsupported asset type ({typeof(T).Name}).");
 
-                return provider.Load(path, args);
+                return default(T);
             }
 
-            this.Log("Unsupported asset type ({0}).", typeof(T).Name);
+            AssetHandler<T> provider = (AssetHandler<T>)AssetHandlers[typeof(T)];
 
-            return default(T);
+            return provider.Load(path, args);
         }
 
-        public void Save<T>(T asset, string assetPath)where T :IAsset
+        public void SaveAsync<T>(T asset, string assetPath) where T : IAsset
         {
-            if (AssetHandlers.ContainsKey(typeof(T)))
+            if (!AssetHandlers.ContainsKey(typeof(T)))
             {
-                AssetHandler<T> provider = (AssetHandler<T>)AssetHandlers[typeof(T)];
-
-                SaveTo<T>(asset, provider.GetAssetPath(assetPath));
+                this.Log($"Unsupported asset type ({typeof(T).Name}).");
 
                 return;
             }
 
-            this.Log("Unsupported asset type ({0}).", typeof(T).Name);
+            AssetHandler<T> provider = (AssetHandler<T>)AssetHandlers[typeof(T)];
+            SaveToAsync<T>(asset, provider.GetAssetPath(assetPath));
         }
 
-        public void SaveTo<T>(T asset, string assetPath) where T : IAsset
+        public void SaveToAsync<T>(T asset, string assetPath) where T : IAsset
         {
-            if (AssetHandlers.ContainsKey(typeof(T)))
+            if (!AssetHandlers.ContainsKey(typeof(T)))
             {
-                AssetHandler<T> provider = (AssetHandler<T>)AssetHandlers[typeof(T)];
-                provider.Save(asset, assetPath);
+                this.Log($"Unsupported asset type ({typeof(T).Name}).");
+
+                return;
             }
+
+            AssetHandler<T> provider = (AssetHandler<T>)AssetHandlers[typeof(T)];
+            provider.Save(asset, assetPath);
         }
 
         #region IDisposable Support
@@ -94,7 +96,7 @@ namespace Flamy2D.Assets
             {
                 if (disposing)
                 {
-                    
+
                 }
 
                 AssetHandlers.Clear();

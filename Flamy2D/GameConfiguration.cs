@@ -25,7 +25,7 @@ namespace Flamy2D
         /// <summary>
         /// If the game should use Vertical sync. 
         /// </summary>
-        public bool VSync { get; set; }
+        public VSyncMode VSync { get; set; }
 
         /// <summary>
         /// The width of the game window
@@ -56,9 +56,9 @@ namespace Flamy2D
             Title = "Flamy 2D Engine";
             Width = 640;
             Height = 480;
-            VSync = false;
+            VSync = VSyncMode.Off;
             FPSTarget = 60;
-            FixedFPS = false;
+            FixedFPS = true;
         }
     }
 }

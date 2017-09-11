@@ -16,7 +16,7 @@ namespace TestProject
         private float drawX, drawY;
         private Texture2D[] textures;
         private Texture2D tex;
-        private  float flame_switch= 0.22f;
+        private float flame_switch = 0.22f;
         private float flame_switch_timer = 0;
         private int index = 0;
 
@@ -27,25 +27,25 @@ namespace TestProject
             this.y = y;
         }
 
-        public override void Load(GameEngine game)
+        public override void Load(Game game)
         {
-            
+
             textures = new Texture2D[3];
             index = rnd.Next(0, 3);
 
             for (int i = 0; i < textures.Length; i++)
             {
-                textures[i] =game.Content.Load<Texture2D>("fire" + i + ".png", TextureConfiguration.Nearest);
+                textures[i] = game.Content.LoadAsync<Texture2D>("fire" + i + ".png", TextureConfiguration.Nearest);
             }
 
             tex = textures[index];
         }
 
-        public override void Update(GameEngine game)
+        public override void Update(Game game)
         {
             base.Update(game);
 
-            TestGame g = (TestGame) game;
+            TestGame g = (TestGame)game;
 
             drawX = x - g.camera.x;
             drawY = y - g.camera.y;
@@ -63,7 +63,7 @@ namespace TestProject
             }
         }
 
-        public override void Render(GameEngine game, SpriteBatch batch)
+        public override void Render(Game game, SpriteBatch batch)
         {
             batch.Draw(tex, drawX, drawY, Color4.White, scale);
         }

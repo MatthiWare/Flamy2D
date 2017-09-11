@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Diagnostics;
 
 namespace Flamy2D.Fonts
 {
+    [DebuggerDisplay("RGBA: ({R},{G},{B},{A})")]
     struct RGBA
     {
         public byte R, G, B, A;

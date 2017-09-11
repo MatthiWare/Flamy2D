@@ -21,24 +21,21 @@ namespace TestProject
         private double c = 0;
         private float changer = 0.35f;
         private bool switcher = true;
-        private Font font;
+        private BitmapFont font;
         private Text text;
         private Sound sound;
-        private Texture2D test;
 
         public Player()
         {
-            textures=new Texture2D[8];
+            textures = new Texture2D[8];
         }
 
-        public override void Load(GameEngine game)
+        public override void Load(Game game)
         {
             for (int i = 0; i < textures.Length; i++)
             {
-                textures[i] = game.Content.Load<Texture2D>("spr_speler_" + i + ".png", TextureConfiguration.Nearest);
+                textures[i] = game.Content.LoadAsync<Texture2D>("spr_speler_" + i + ".png", TextureConfiguration.Nearest);
             }
-
-            test = game.Content.Load<Texture2D>("test.png", TextureConfiguration.Nearest);
 
             tex = textures[0];
 
@@ -48,16 +45,16 @@ namespace TestProject
             y = ((float)game.Configuration.Height / 2) - ((float)height / 2);
             drawX = ((float)game.Configuration.Width / 2) - ((float)width / 2);
             drawY = ((float)game.Configuration.Height / 2) - ((float)height / 2);
-             font = game.Content.Load<Font>("LVDCC.TTF", 50f);
-            text = new Text("Het werkt gg ez!", font, x, y);
-            sound = game.Content.Load<Sound>("3test.ogg");
+            font = game.Content.LoadAsync<BitmapFont>("test.fnt");
+            text = new Text("Dag Bieke!", font, x, y);
+            //sound = game.Content.Load<Sound>("3test.ogg");
         }
 
-        public override void Update(GameEngine game)
+        public override void Update(Game game)
         {
             base.Update(game);
 
-            TestGame g = (TestGame) game;
+            TestGame g = (TestGame)game;
 
             if (game.Keyboard.IsKeyDown(Key.S))
             {
@@ -67,7 +64,8 @@ namespace TestProject
             if (game.Keyboard.IsAnyKeyDown(Key.Q, Key.Left))
             {
                 x -= (float)(speed * game.Time.Elapsed);
-                g.camera.x-= (float)(speed * game.Time.Elapsed);
+                g.camera.x -= (float)(speed * game.Time.Elapsed);
+
                 if (switcher)
                     tex = textures[4];
                 else
@@ -78,6 +76,7 @@ namespace TestProject
             {
                 x += (float)(speed * game.Time.Elapsed);
                 g.camera.x += (float)(speed * game.Time.Elapsed);
+
                 if (switcher)
                     tex = textures[0];
                 else
@@ -88,6 +87,7 @@ namespace TestProject
             {
                 y -= (float)(speed * game.Time.Elapsed);
                 g.camera.y -= (float)(speed * game.Time.Elapsed);
+
                 if (switcher)
                     tex = textures[2];
                 else
@@ -98,6 +98,7 @@ namespace TestProject
             {
                 y += (float)(speed * game.Time.Elapsed);
                 g.camera.y += (float)(speed * game.Time.Elapsed);
+
                 if (switcher)
                     tex = textures[6];
                 else
@@ -115,16 +116,12 @@ namespace TestProject
             text.Update(g);
         }
 
-        
 
-        public override void Render(GameEngine game, SpriteBatch batch)
+
+        public override void Render(Game game, SpriteBatch batch)
         {
             batch.Draw(tex, drawX, drawY, Color4.White, scale);
             text.Render(game, batch);
-
-            int x = (game.Configuration.Width / 2) - (test.Width / 2);
-            int y = (game.Configuration.Height / 2) - (test.Height / 2);
-            //batch.Draw(test, x, y, Color4.White);
         }
     }
 }

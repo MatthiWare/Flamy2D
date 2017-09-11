@@ -1,29 +1,26 @@
 ﻿using System;
 using Flamy2D.Fonts;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
+using System.Drawing;
+using System.Threading.Tasks;
 
 namespace Flamy2D.Assets.Providers
 {
-    public class FontProvider : AssetHandler<Font>
+    public class FontProvider : AssetHandler<BitmapFont>
     {
-
-        private Dictionary<Tuple<string, float>, Font> cache = new Dictionary<Tuple<string, float>, Font>();
+        private ConcurrentDictionary<string, BitmapFont> cache = new ConcurrentDictionary<string, BitmapFont>();
 
         public FontProvider(ContentManager mgr)
             : base(mgr, "Fonts")
         { }
 
-        public override Font Load(string assetName, params object[] args)
-        {
-            return GetFont(assetName, args.Length >= 1 ? (float)args[0] : 12f);
-        }
+        public override BitmapFont Load(string assetName, params object[] args) => cache.GetOrAdd(assetName,  BitmapFontLoader.Load(assetName));
 
-        private Font GetFont(string name, float size)
+        public override void Save(BitmapFont asset, string path)
         {
-            Tuple<string, float> f = new Tuple<string, float>(name, size);
-            if (!cache.ContainsKey(f))
-                cache.Add(f, new Font(name, size));
-            return cache[f];
+            throw new NotImplementedException();
         }
     }
+
+   
 }

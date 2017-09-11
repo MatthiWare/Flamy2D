@@ -10,9 +10,9 @@ namespace Flamy2D.GameObjects
         {
             Loaded = false;
         }
-        public abstract void Load(GameEngine game);
+        public abstract void Load(Game game);
 
-        public virtual void Update(GameEngine game)
+        public virtual void Update(Game game)
         {
             if (!Loaded)
             {
@@ -21,7 +21,7 @@ namespace Flamy2D.GameObjects
             }
         }
 
-        public abstract void Render(GameEngine game, SpriteBatch batch);
+        public abstract void Render(Game game, SpriteBatch batch);
 
         public void Reload()
         {

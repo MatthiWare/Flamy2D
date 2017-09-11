@@ -1,4 +1,5 @@
 ﻿using Flamy2D;
+using Flamy2D.Fonts;
 using System;
 using System.IO;
 using System.Reflection;
@@ -15,11 +16,14 @@ namespace TestProject
         static void Main()
         {
            //SetUnmanagedDllDirectory();
+           
+           
 
             GameConfiguration config = new GameConfiguration();
             config.FPSTarget = 60;
-            config.FixedFPS = true;
-            config.Resizable = false;
+            config.FixedFPS = false;
+            config.Resizable = true;
+            config.VSync = VSyncMode.Off;
 
             TestGame game = new TestGame(config);
             game.Run();

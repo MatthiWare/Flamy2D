@@ -15,22 +15,22 @@ namespace TestProject
 
         private float x, y, drawX, drawY;
         private string text;
-        private Font font;
+        private BitmapFont font;
 
-        public Text(string txt, Font f, float x, float y)
+        public Text(string txt, BitmapFont f, float x, float y)
         {
-            this.text = txt;
-            this.font = f;
+            text = txt;
+            font = f;
             this.x = x;
             this.y = y;
         }
 
-        public override void Load(GameEngine game)
+        public override void Load(Game game)
         {
             Console.WriteLine("loaded");
         }
 
-        public override void Update(GameEngine game)
+        public override void Update(Game game)
         {
             base.Update(game);
 
@@ -40,7 +40,7 @@ namespace TestProject
             drawY = y - g.camera.y;
         }
 
-        public override void Render(GameEngine game, SpriteBatch batch)
+        public override void Render(Game game, SpriteBatch batch)
         {
             font.DrawString(batch, text, (int)drawX, (int)drawY, Color4.White);
         }

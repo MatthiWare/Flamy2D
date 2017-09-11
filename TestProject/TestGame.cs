@@ -5,7 +5,7 @@ using OpenTK.Graphics.OpenGL4;
 
 namespace TestProject
 {
-    public class TestGame : GameEngine
+    public class TestGame : Game
     {
         public Camera camera;
 
@@ -34,7 +34,7 @@ namespace TestProject
 
         protected override void Render(SpriteBatch batch)
         {
-            GL.Clear(ClearBufferMask.ColorBufferBit);
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             base.Render(batch);
         }
 

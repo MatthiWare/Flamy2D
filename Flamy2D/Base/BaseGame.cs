@@ -1,6 +1,4 @@
-﻿using Flamy2D;
-using Flamy2D.Extensions;
-using OpenTK;
+﻿using OpenTK;
 using OpenTK.Graphics;
 using Flamy2D.Input;
 using System.Threading;
@@ -9,19 +7,16 @@ using Flamy2D.Graphics;
 using Flamy2D.Assets;
 using System;
 using Flamy2D.Assets.Providers;
-using Flamy2D.Fonts;
-using System.Runtime.InteropServices;
-using System.IO;
-using System.Reflection;
 using Flamy2D.Audio;
 using OpenTK.Audio;
+using Flamy2D.Fonts;
 
 namespace Flamy2D.Base
 {
     /// <summary>
-    /// The GameEngine containing all the game logic.
+    /// The Game containing all the game logic.
     /// </summary>
-    public class Game : IDisposable, ILog
+    public class BaseGame : IDisposable
     {
 
         public ContentManager Content { get; private set; }
@@ -45,10 +40,42 @@ namespace Flamy2D.Base
 
         public bool Closing { get; private set; }
 
+        public VSyncMode VSync
+        {
+            get
+            {
+                GraphicsContext.Assert();
+
+                if (context.SwapInterval < 0)
+                    return VSyncMode.Adaptive;
+                else if (context.SwapInterval == 0)
+                    return VSyncMode.Off;
+                else
+                    return VSyncMode.On;
+            }
+            set
+            {
+                GraphicsContext.Assert();
+
+                switch (value)
+                {
+                    case VSyncMode.Adaptive:
+                        context.SwapInterval = -1;
+                        break;
+                    case VSyncMode.On:
+                        context.SwapInterval = 1;
+                        break;
+                    case VSyncMode.Off:
+                        context.SwapInterval = 0;
+                        break;
+                }
+            }
+        }
+
         private NativeWindow window;
         private GraphicsContext context;
         private GraphicsMode graphicsMode;
-        
+
         private bool updating = false;
 
         private SpriteBatch batch;
@@ -60,18 +87,18 @@ namespace Flamy2D.Base
         /// Initializes the static game
         /// See <see cref="SetUnmanagedDllDirectory"/> for more information. 
         /// </summary>
-        static Game()
+        static BaseGame()
         {
             //SetUnmanagedDllDirectory();
         }
 
-        public Game(GameConfiguration config)
+        public BaseGame(GameConfiguration config)
         {
             Configuration = config;
             Closing = false;
 
             Keyboard = new Keyboard();
-             Time = new GameTime();
+            Time = new GameTime();
 
             Content = new ContentManager();
         }
@@ -84,7 +111,7 @@ namespace Flamy2D.Base
             Initialize();
 
             Thread gameloopThread = new Thread(GameLoop);
-            gameloopThread.Name = "Game Loop Thread";
+            gameloopThread.Name = "BaseGame Loop Thread";
             gameloopThread.Start();
 
             this.Log("Enter message processing loop");
@@ -105,17 +132,14 @@ namespace Flamy2D.Base
         {
             this.Log("Create graphics context");
 
-            context = new GraphicsContext(graphicsMode, window.WindowInfo);
+            context = new GraphicsContext(graphicsMode, window.WindowInfo, 4, 0, GraphicsContextFlags.Debug);
 
             context.MakeCurrent(window.WindowInfo);
 
             GraphicsContext.Assert();
 
-            this.Log("Enable VSync: {0}", Configuration.VSync);
-            if (Configuration.VSync)
-                context.SwapInterval = 1;
-            else
-                context.SwapInterval = 0;
+            this.Log($"VSync: {Configuration.VSync}");
+            VSync = Configuration.VSync;
 
             this.Log("Loading OpenGL entry points");
             context.LoadAll();
@@ -146,7 +170,7 @@ namespace Flamy2D.Base
                     break;
                 }
 
-                updating = true; 
+                updating = true;
 
                 InternUpdate();
                 Render(batch);
@@ -161,7 +185,7 @@ namespace Flamy2D.Base
         public virtual void LoadAssetProviders()
         {
             Content.RegisterAssetHandler<Texture2D>(typeof(TextureProvider));
-            Content.RegisterAssetHandler<Font>(typeof(FontProvider));
+            Content.RegisterAssetHandler<BitmapFont>(typeof(FontProvider));
             Content.RegisterAssetHandler<Sound>(typeof(SoundProvider));
         }
 
@@ -208,7 +232,7 @@ namespace Flamy2D.Base
         }
 
         /// <summary>
-        /// Pre <see cref="Run"/> Initializes the Game. 
+        /// Pre <see cref="Run"/> Initializes the BaseGame. 
         /// </summary>
         private void Initialize()
         {
@@ -285,6 +309,8 @@ namespace Flamy2D.Base
 
             if (context != null && !context.IsDisposed)
                 context.Update(window.WindowInfo);
+
+            GL.Viewport(0, 0, window.Width, window.Height);
         }
 
         protected virtual void OnExit()
@@ -307,7 +333,7 @@ namespace Flamy2D.Base
 
                     while (updating) ;
                 }
-                
+
 
                 if (disposing)
                 {
@@ -319,7 +345,7 @@ namespace Flamy2D.Base
                     Time.Dispose();
                 }
 
-                
+
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
                 // TODO: set large fields to null.
@@ -329,7 +355,7 @@ namespace Flamy2D.Base
         }
 
         // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        // ~Game() {
+        // ~BaseGame() {
         //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
         //   Dispose(false);
         // }
