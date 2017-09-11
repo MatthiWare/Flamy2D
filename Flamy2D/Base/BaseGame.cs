@@ -132,7 +132,7 @@ namespace Flamy2D.Base
         {
             this.Log("Create graphics context");
 
-            context = new GraphicsContext(graphicsMode, window.WindowInfo);
+            context = new GraphicsContext(graphicsMode, window.WindowInfo, 4, 0, GraphicsContextFlags.Debug);
 
             context.MakeCurrent(window.WindowInfo);
 

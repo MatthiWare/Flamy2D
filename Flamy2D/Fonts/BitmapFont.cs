@@ -154,7 +154,6 @@ namespace Flamy2D.Fonts
                 {
                     x = 0;
                     y += LineHeight;
-                    continue;
                 }
                 else
                 {
@@ -172,8 +171,8 @@ namespace Flamy2D.Fonts
 
         private void DrawCharacter(SpriteBatch batch, Character c, int x, int y, Color4 color)
         {
-            var src = new Rectangle(x, y, c.Bounds.Width, c.Bounds.Height);
-            batch.Draw(Textures[c.TexturePage], src, c.Bounds, color);
+            var dst = new Rectangle(x, y, c.Bounds.Width, c.Bounds.Height);
+            batch.Draw(Textures[c.TexturePage], c.Bounds, dst, color);
         }
 
         public IEnumerator<Character> GetEnumerator()

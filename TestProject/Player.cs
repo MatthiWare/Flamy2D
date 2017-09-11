@@ -45,8 +45,8 @@ namespace TestProject
             y = ((float)game.Configuration.Height / 2) - ((float)height / 2);
             drawX = ((float)game.Configuration.Width / 2) - ((float)width / 2);
             drawY = ((float)game.Configuration.Height / 2) - ((float)height / 2);
-            font = game.Content.LoadAsync<BitmapFont>("LVDCC.TTF.fnt");
-            text = new Text("Hello world", font, x, y);
+            font = game.Content.LoadAsync<BitmapFont>("test.fnt");
+            text = new Text("Dag Bieke!", font, x, y);
             //sound = game.Content.Load<Sound>("3test.ogg");
         }
 

@@ -21,7 +21,7 @@ namespace TestProject
 
             GameConfiguration config = new GameConfiguration();
             config.FPSTarget = 60;
-            config.FixedFPS = true;
+            config.FixedFPS = false;
             config.Resizable = true;
             config.VSync = VSyncMode.Off;
 
